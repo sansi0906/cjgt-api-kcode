@@ -1,0 +1,354 @@
+[
+  {
+    "module": "登录模块",
+    "name": "无 Token 登出，返回成功",
+    "url": "/sys/logout",
+    "params": "无 Authorization 请求头",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "服务商模块",
+    "name": "删除不存在的服务商，返回成功",
+    "url": "/platform/serverUser/delete",
+    "params": "{\"id\": 999999}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "服务商模块",
+    "name": "修改不存在的服务商状态，返回成功",
+    "url": "/platform/serverUser/changeStatus",
+    "params": "{\"id\": 999999, \"status\": 1}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "服务商模块",
+    "name": "修改服务商状态为非法值 2，返回成功",
+    "url": "/platform/serverUser/changeStatus",
+    "params": "{\"id\": 2042, \"status\": 2}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "服务项目模块",
+    "name": "添加服务项目 billing_method 传 0，被接受",
+    "url": "/platform/serviceItem/add",
+    "params": "{\"itemName\": \"TestItem\", \"billingMethod\": 0, \"subtitle\": \"Test\", \"itemDesc\": \"Test\"}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "服务项目模块",
+    "name": "添加服务项目 billing_method 传超大值，被接受",
+    "url": "/platform/serviceItem/add",
+    "params": "{\"itemName\": \"TestItem2\", \"billingMethod\": 2147483647, \"subtitle\": \"Test\", \"itemDesc\": \"Test\"}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "服务项目模块",
+    "name": "编辑服务项目 billing_method 传 0，被接受",
+    "url": "/platform/serviceItem/edit",
+    "params": "{\"id\": 1241, \"itemName\": \"TestItem\", \"billingMethod\": 0, \"subtitle\": \"Test\", \"itemDesc\": \"Test\"}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "服务项目模块",
+    "name": "编辑服务项目 billing_method 传超大值，被接受",
+    "url": "/platform/serviceItem/edit",
+    "params": "{\"id\": 1241, \"itemName\": \"TestItem2\", \"billingMethod\": 2147483647, \"subtitle\": \"Test\", \"itemDesc\": \"Test\"}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "服务项目模块",
+    "name": "服务项目分页 pageNum 传负数，被接受",
+    "url": "/platform/serviceItem/paging",
+    "params": "{\"pageNum\": -1, \"pageSize\": 10}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": {
+        "records": [
+          {
+            "id": "289",
+            "itemName": "测试新增服务项目",
+            "subtitle": "测试新增服务项目",
+            "billingMethod": 2,
+            "iconUrl": "",
+            "itemDesc": "",
+            "isDisplay": 1,
+            "createUserName": "聂宁芳",
+            "createTime": "2026-07-31 19:10:19"
+          },
+          {
+            "id": "303",
+            "itemName": "测试项目1（前端）",
+            "subtitle": "测试项目副标题1",
+            "billingMethod": 1,
+            "iconUrl": null,
+            "itemDesc": "<p style=\"text-align: center;\"><span style=\"font-size: 36pt;\"><strong>标题标题标题</strong></span></p>\n<p>微风方法却无法全额微风微风起飞起飞前往发为发为副为佛去就发iowjfqfijewofjqi方法及其哦飞机诶我去接</p>\n<p><img src=\"https://gt.gongrenle.com/api/cjgt/api/file/pub/download?path=%2F20260805%2FG49IYR37538.png\"></p>",
+            "isDisplay": 1,
+            "createUserName": "超级管理员",
+            "createTime": "2026-08-03 11:24:14"
+          },
+          {
+            "id": "304",
+            "itemName": "测试项目2（前端）",
+            "subtitle": "测试项目副标题2（前端）",
+            "billingMethod": 2,
+            "iconUrl": null,
+            "itemDesc": "<p>范文芳去发飞佛去就提前 发就为i哦飞机起飞金额请哦减肥i</p>\n<p></p>",
+            "isDisplay": 1,
+            "createUserName": "超级管理员",
+            "createTime": "2026-08-03 11:24:41"
+          },
+          {
+            "id": "306",
+            "itemName": "代理记账报税",
+            "subtitle": "增值税、个税按月/季申报，工商年报代提交",
+            "billingMethod": 2,
+            "iconUrl": null,
+            "itemDesc": "<p>个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销个体户注销</p>",
+            "isDisplay": 1,
+            "createUserName": "超级管理员",
+            "createTime": "2026-08-04 10:00:47"
+          },
+          {
+            "id": "307",
+            "itemName": "个体户注册",
+            "subtitle": "含营业执照办理、税务登记全流程在线办理",
+            "billingMethod": 1,
+            "iconUrl": null,
+            "itemDesc": "<p style=\"text-align: center;\"><span style=\"font-size: 14pt;\"><strong>小规模纳税人增值税减免政策</strong></span></p>\n<p style=\"text-align: left;\">2026-08-04</p>\n<p>个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册个体户注册</p>\n<p><img src=\"https://gt.gongrenle.com/api/cjgt/api/file/pub/download?path=%2F20260806%2F%E6%9C%A8%E5%B7%A550006.jpg\"></p>",
+            "isDisplay": 0,
+            "createUserName": "超级管理员",
+            "createTime": "2026-08-04 10:01:15"
+          },
+          {
+            "id": "540",
+            "itemName": "价格初始化",
+            "subtitle": "价格初始化",
+            "billingMethod": 2,
+            "iconUrl": null,
+            "itemDesc": "<p>价格初始化</p>",
+            "isDisplay": 1,
+            "createUserName": "发短信员工",
+            "createTime": "2026-08-07 13:59:19"
+          },
+          {
+            "id": "542",
+            "itemName": "个体户注销",
+            "subtitle": "111",
+            "billingMethod": 1,
+            "iconUrl": null,
+            "itemDesc": null,
+            "isDisplay": 0,
+            "createUserName": "张雨欣",
+            "createTime": "2026-08-07 14:24:14"
+          },
+          {
+            "id": "732",
+            "itemName": "市场主体注册",
+            "subtitle": "个体户工商注册、刻章",
+            "billingMethod": 1,
+            "iconUrl": null,
+            "itemDesc": "<p>市场主体注册服务内容包含：<br>1.名称核准：材料整理、提交材料、等待核名通过<br>2.个体户工商注册：为甲方办理个体户工商注册<br>3.刻章：办理刻章、取章</p>",
+            "isDisplay": 1,
+            "createUserName": "超级管理员",
+            "createTime": "2026-08-13 09:00:30"
+          },
+          {
+            "id": "733",
+            "itemName": "注册地址",
+            "subtitle": "提供合规注册地址",
+            "billingMethod": 1,
+            "iconUrl": null,
+            "itemDesc": "<p>注册地址服务主要为个体户提供真实、合法的注册地址，确保合法合规经营</p>",
+            "isDisplay": 1,
+            "createUserName": "超级管理员",
+            "createTime": "2026-08-13 09:00:57"
+          },
+          {
+            "id": "734",
+            "itemName": "记账报税",
+            "subtitle": "记账报税服务、代缴税金、工商年报",
+            "billingMethod": 2,
+            "iconUrl": null,
+            "itemDesc": "<p>记账报税服务主要包含：<br>1. 记账报税服务：建立账册、取得客户票据、核查客户票据、编制记账凭证、 &nbsp;与客户确认税源、 编制财务报表、年度所得税汇算清缴；增值税申报、附加税申报、房产税申报、个税申报、土地使用税申报、企业所得税申报、印花税申报、工会经费申报； 打印凭证、整理凭证、 粘贴凭证、装订凭证、打印纳税申报表、打印全年明细账、打印全年总账(包含残保金)<br>2. 开票：代开发票<br>3. 代缴税金<br>4. 税务登记：携带工商材料代甲方办理税务备案事宜<br>5. 汇算清缴：填写企业所得税年度纳税申报表及其附表<br>6. 三方协议：从税务领取回三方协议，银行签订三方协议，向税务送回三方协议<br>7. 工商年报：工商企业年度公示信息表填写</p>",
+            "isDisplay": 1,
+            "createUserName": "超级管理员",
+            "createTime": "2026-08-13 09:01:26"
+          }
+        ],
+        "total": 46,
+        "size": 10,
+        "current": 1,
+        "pages": 5
+      }
+    }
+  },
+  {
+    "module": "服务项目模块",
+    "name": "服务项目分页 pageSize 传 0，被接受",
+    "url": "/platform/serviceItem/paging",
+    "params": "{\"pageNum\": 1, \"pageSize\": 0}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": {
+        "records": [],
+        "total": 46,
+        "size": 0,
+        "current": 1,
+        "pages": 0
+      }
+    }
+  },
+  {
+    "module": "服务项目模块",
+    "name": "更新服务项目状态 is_display 传 2，被接受",
+    "url": "/platform/serviceItem/updateStatus",
+    "params": "{\"id\": 1241, \"isDisplay\": 2}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "服务项目模块",
+    "name": "更新服务项目状态 is_display 传负数，被接受",
+    "url": "/platform/serviceItem/updateStatus",
+    "params": "{\"id\": 1241, \"isDisplay\": -1}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "知识库模块",
+    "name": "删除不存在的知识库记录，返回成功",
+    "url": "/platform/knowledge/delete",
+    "params": "{\"id\": 999999}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "知识库模块",
+    "name": "知识库 title 字段 SQL 注入，被接受",
+    "url": "/platform/knowledge/save",
+    "params": "{\"title\": \"' OR '1'='1\", \"content\": \"TestContent\", \"consultType\": 1, \"displayPosition\": [0, 1], \"applicableArea\": [{\"code\": \"110119000000\", \"name\": \"\\u5ef6\\u5e86\\u533a\", \"level\": \"county\"}]}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "知识库模块",
+    "name": "知识库 title 字段 XSS 注入，被接受",
+    "url": "/platform/knowledge/save",
+    "params": "{\"title\": \"<script>alert('xss')</script>\", \"content\": \"TestContent\", \"consultType\": 1, \"displayPosition\": [0, 1], \"applicableArea\": [{\"code\": \"110119000000\", \"name\": \"\\u5ef6\\u5e86\\u533a\", \"level\": \"county\"}]}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "知识库模块",
+    "name": "知识库 content 字段 XSS 注入，被接受",
+    "url": "/platform/knowledge/save",
+    "params": "{\"title\": \"TestTitle\", \"content\": \"<script>alert('xss')</script>\", \"consultType\": 1, \"displayPosition\": [0, 1], \"applicableArea\": [{\"code\": \"110119000000\", \"name\": \"\\u5ef6\\u5e86\\u533a\", \"level\": \"county\"}]}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "合同服务配置模块",
+    "name": "创建合同配置返回系统异常",
+    "url": "/platform/contactConfig/save",
+    "params": "{\"serviceItemId\": 1241, \"title\": \"\\u5408\\u540c\\u914d\\u7f6e1786696275\", \"content\": \"TestContent\", \"priceContent\": \"TestPrice\"}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "合同服务配置模块",
+    "name": "同一服务项目创建第二个合同配置，返回系统异常",
+    "url": "/platform/contactConfig/save",
+    "params": "{\"serviceItemId\": 1241, \"title\": \"\\u5408\\u540c\\u914d\\u7f6e1786696276\", \"content\": \"TestContent2\", \"priceContent\": \"TestPrice2\"}",
+    "response": {
+      "code": "01000006",
+      "message": "该服务项目已存在合同配置",
+      "data": null
+    }
+  },
+  {
+    "module": "异常场景模块",
+    "name": "模拟非法 JSON 响应，客户端崩溃",
+    "url": "/sys/login",
+    "params": "模拟非法 JSON 响应",
+    "response": {
+      "error": "Invalid JSON: line 1 column 1 (char 0)"
+    }
+  },
+  {
+    "module": "平台用户模块",
+    "name": "修改不存在的用户状态，返回成功",
+    "url": "/platform/serverUser/changeStatus",
+    "params": "{\"id\": 999999, \"status\": 1}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  },
+  {
+    "module": "平台用户模块",
+    "name": "删除不存在的用户，返回成功",
+    "url": "/platform/serverUser/delete",
+    "params": "{\"id\": 999999}",
+    "response": {
+      "code": "00",
+      "message": "操作成功",
+      "data": null
+    }
+  }
+]
