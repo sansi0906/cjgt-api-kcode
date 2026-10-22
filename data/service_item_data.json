@@ -1,0 +1,65 @@
+[
+  {"name": "add_success", "desc": "新增服务项目成功", "api": "add",
+   "payload": {"itemName": "${unique_item_name}", "billingMethod": 1, "subtitle": "自动化副标题", "itemDesc": "自动化介绍", "itemCode": "${unique_item_code}"},
+   "expect_success": true},
+
+  {"name": "add_missing_item_name", "desc": "新增服务项目缺少名称", "api": "add",
+   "payload": {"billingMethod": 1},
+   "expect_success": false, "expect_code": "01000006"},
+
+  {"name": "add_missing_billing_method", "desc": "新增服务项目缺少计费方式", "api": "add",
+   "payload": {"itemName": "${unique_item_name}"},
+   "expect_success": false, "expect_code": "01000006"},
+
+  {"name": "add_item_name_too_long", "desc": "新增服务项目名称超过10个字", "api": "add",
+   "payload": {"itemName": "自动化服务项目名称超长测试用例", "billingMethod": 1},
+   "expect_success": false, "expect_code": "01000006"},
+
+  {"name": "paging_normal", "desc": "分页查询服务项目成功", "api": "paging",
+   "payload": {"pageNum": 1, "pageSize": 10}, "expect_success": true},
+
+  {"name": "paging_filter_by_item_name", "desc": "按名称模糊查询服务项目", "api": "paging",
+   "payload": {"pageNum": 1, "pageSize": 10, "itemName": "自动化"}, "expect_success": true},
+
+  {"name": "paging_filter_by_billing_method", "desc": "按计费方式过滤服务项目", "api": "paging",
+   "payload": {"pageNum": 1, "pageSize": 10, "billingMethod": 1}, "expect_success": true},
+
+  {"name": "paging_filter_by_is_display", "desc": "按展示状态过滤服务项目", "api": "paging",
+   "payload": {"pageNum": 1, "pageSize": 10, "isDisplay": 1}, "expect_success": true},
+
+  {"name": "list_display_all", "desc": "查询展示状态的服务项目列表", "api": "list_display",
+   "payload": {}, "expect_success": true},
+
+  {"name": "list_display_hidden", "desc": "查询不展示的服务项目列表", "api": "list_display",
+   "payload": {"isDisplay": 0}, "expect_success": true},
+
+  {"name": "edit_success", "desc": "编辑服务项目成功", "api": "edit", "need_item": true,
+   "payload": {"id": "${item_id}", "itemName": "${item_name}改", "billingMethod": 2, "subtitle": "新副标题", "itemDesc": "新介绍"},
+   "expect_success": true},
+
+  {"name": "edit_missing_id", "desc": "编辑服务项目缺少ID", "api": "edit",
+   "payload": {"itemName": "${unique_item_name}", "billingMethod": 1},
+   "expect_success": false, "expect_code": "01000006"},
+
+  {"name": "edit_missing_item_name", "desc": "编辑服务项目缺少名称", "api": "edit", "need_item": true,
+   "payload": {"id": "${item_id}", "billingMethod": 1},
+   "expect_success": false, "expect_code": "01000006"},
+
+  {"name": "edit_missing_billing_method", "desc": "编辑服务项目缺少计费方式", "api": "edit", "need_item": true,
+   "payload": {"id": "${item_id}", "itemName": "${unique_item_name}"},
+   "expect_success": false, "expect_code": "01000006"},
+
+  {"name": "update_status_display", "desc": "开启服务项目展示成功", "api": "update_status", "need_item": true,
+   "payload": {"id": "${item_id}", "isDisplay": 1}, "expect_success": true},
+
+  {"name": "update_status_hide", "desc": "关闭服务项目展示成功", "api": "update_status", "need_item": true,
+   "payload": {"id": "${item_id}", "isDisplay": 0}, "expect_success": true},
+
+  {"name": "update_status_missing_id", "desc": "切换展示状态缺少ID", "api": "update_status",
+   "payload": {"isDisplay": 1},
+   "expect_success": false, "expect_code": "01000006"},
+
+  {"name": "update_status_missing_is_display", "desc": "切换展示状态缺少展示状态", "api": "update_status", "need_item": true,
+   "payload": {"id": "${item_id}"},
+   "expect_success": false, "expect_code": "01000006"}
+]

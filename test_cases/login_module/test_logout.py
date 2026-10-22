@@ -22,7 +22,7 @@ class TestLogout(TestBase):
         data = response.json()
         self.assert_save_success(data)
 
-    @pytest.mark.skip(reason="Bug 1: 已注释")
+    @pytest.mark.xfail(reason="Backend bug: logout without token returns success")
     @pytest.mark.backend_bug
     def test_logout_without_token(self):
         """无 Token 登出，预期应返回失败，但后端实际返回成功（疑似未做 Token 校验）"""
@@ -33,19 +33,21 @@ class TestLogout(TestBase):
         # 实际后端bug：返回成功 code:00
         assert data.get("code") not in ("0", "00"), f"Expected failure without token, got: {data}"
 
+    @pytest.mark.backend_bug
     def test_logout_with_invalid_token(self):
-        """使用无效 Token 登出，应返回失败"""
+        """使用无效 Token 登出，应返回失败；后端实际返回 02（系统繁忙），疑似未识别无效 Token"""
         self.client.set_token("invalid_token_12345")
         response = self.client.logout()
-        assert response.status_code == 200
+        self.validator.assert_status_code(response, 200)
         data = response.json()
-        self.assert_save_failure(data)
+        self.assert_api_failure(data, expected_code="02")
 
     def test_logout_with_empty_token(self):
-        """使用空 Token 登出，应返回失败"""
+        """使用空 Token 登出，应返回 01000003 访问无权限"""
         self.client.set_token("")
         response = self.client.logout()
-        assert response.status_code == 200
+        self.validator.assert_status_code(response, 200)
+        self.assert_api_failure(response.json(), expected_code="01000003")
 
     def test_logout_then_relogin(self):
         """登出后重新登录，验证完整生命周期"""
@@ -61,9 +63,36 @@ class TestLogout(TestBase):
         login_response = self.client.login(
             username=self.config["username"],
             password=self.config["password"],
-            login_type=self.config.get("LOGIN_TYPE", 1),
-            web_type=self.config.get("WEB_TYPE", 0),
+            login_type=self.config.get("login_type", 1),
+            web_type=self.config.get("web_type", 0),
         )
         assert login_response.status_code == 200
         login_data = login_response.json()
         self.assert_login_success(login_data)
+
+    def test_token_invalid_after_logout(self):
+        """登出后原 Token 应立即失效，返回 01000005"""
+        login_response = self.client.login(
+            username=self.config["username"],
+            password=self.config["password"],
+            login_type=self.config.get("login_type", 1),
+            web_type=self.config.get("web_type", 0),
+        )
+        self.validator.assert_status_code(login_response, 200)
+        self.assert_login_success(login_response.json())
+        token = login_response.json().get("data", {}).get("token")
+        assert token, "登录未返回 token"
+
+        self.client.set_token(token)
+        logout_response = self.client.logout()
+        self.validator.assert_status_code(logout_response, 200)
+        self.assert_save_success(logout_response.json())
+
+        reuse_response = self.client.session.post(
+            f"{self.client.base_url}/common/getUserInfo",
+            json={},
+            headers={"Content-Type": "application/json", "token": token},
+            timeout=self.client.timeout,
+        )
+        self.validator.assert_status_code(reuse_response, 200)
+        self.assert_login_failure(reuse_response.json(), expected_code="01000005")

@@ -1,0 +1,241 @@
+[
+  {
+    "name": "save_success",
+    "desc": "新增角色成功",
+    "api": "save",
+    "payload": {
+      "roleName": "${unique_role_name}",
+      "roleNo": "${unique_role_no}",
+      "roleRemark": "自动化创建",
+      "status": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "save_duplicate_role_name",
+    "desc": "新增角色名称已存在",
+    "api": "save",
+    "need_role": true,
+    "payload": {
+      "roleName": "${role_name}",
+      "roleNo": "${unique_role_no}",
+      "status": 1
+    },
+    "expect_success": false,
+    "expect_code": "01000019"
+  },
+  {
+    "name": "save_missing_role_name",
+    "desc": "新增角色缺少角色名称",
+    "api": "save",
+    "payload": {
+      "roleNo": "${unique_role_no}",
+      "status": 1
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_role_no",
+    "desc": "新增角色缺少角色编码",
+    "api": "save",
+    "payload": {
+      "roleName": "${unique_role_name}",
+      "status": 1
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_status",
+    "desc": "新增角色缺少状态",
+    "api": "save",
+    "payload": {
+      "roleName": "${unique_role_name}",
+      "roleNo": "${unique_role_no}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "page_normal",
+    "desc": "分页查询角色成功",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_role_name",
+    "desc": "按角色名称模糊查询",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "roleName": "${role_name}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_status",
+    "desc": "按状态过滤角色",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "status": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_invalid_page_size",
+    "desc": "分页查询每页条数小于最小值",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 0
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "detail_exists",
+    "desc": "查询存在的角色详情",
+    "api": "detail",
+    "need_role": true,
+    "payload": {
+      "id": "${role_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_not_exists",
+    "desc": "查询不存在的角色详情",
+    "api": "detail",
+    "payload": {
+      "id": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000018"
+  },
+  {
+    "name": "detail_missing_id",
+    "desc": "查询角色详情缺少角色ID",
+    "api": "detail",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000020"
+  },
+  {
+    "name": "edit_success",
+    "desc": "编辑角色成功",
+    "api": "edit",
+    "need_role": true,
+    "payload": {
+      "id": "${role_id}",
+      "roleName": "${role_name}_改",
+      "roleNo": "${role_no}",
+      "roleRemark": "已编辑",
+      "status": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "edit_missing_id",
+    "desc": "编辑角色缺少角色ID",
+    "api": "edit",
+    "payload": {
+      "roleName": "${unique_role_name}",
+      "roleNo": "${unique_role_no}",
+      "status": 1
+    },
+    "expect_success": false,
+    "expect_code": "01000020"
+  },
+  {
+    "name": "change_status_disable",
+    "desc": "禁用角色成功",
+    "api": "change_status",
+    "need_role": true,
+    "payload": {
+      "id": "${role_id}",
+      "status": 0
+    },
+    "expect_success": true
+  },
+  {
+    "name": "change_status_enable",
+    "desc": "启用角色成功",
+    "api": "change_status",
+    "need_role": true,
+    "payload": {
+      "id": "${role_id}",
+      "status": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "delete_success",
+    "desc": "删除角色成功",
+    "api": "delete",
+    "need_role": true,
+    "payload": {
+      "id": "${role_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "delete_missing_id",
+    "desc": "删除角色缺少角色ID",
+    "api": "delete",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000020"
+  },
+  {
+    "name": "select_role_all",
+    "desc": "查询角色下拉列表成功",
+    "api": "select_role_all",
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "select_menu_list_by_role_id",
+    "desc": "按角色查询菜单树成功",
+    "api": "select_menu_list",
+    "payload": {
+      "roleId": "${role_id}"
+    },
+    "expect_success": true,
+    "need_role": true
+  },
+  {
+    "name": "select_menu_list_missing_role_id",
+    "desc": "按角色查询菜单树缺少角色ID",
+    "api": "select_menu_list",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "add_role_menu_empty_menu_ids",
+    "desc": "分配角色菜单（空菜单列表）",
+    "api": "add_role_menu",
+    "payload": {
+      "roleId": "${role_id}",
+      "menuIds": []
+    },
+    "expect_success": true,
+    "need_role": true
+  },
+  {
+    "name": "add_role_menu_missing_role_id",
+    "desc": "分配角色菜单缺少角色ID",
+    "api": "add_role_menu",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  }
+]

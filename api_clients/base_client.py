@@ -45,10 +45,14 @@ class BaseClient:
         except ValueError:
             resp_json = {"_raw": response.text[:500]} if response.text else None
 
+        body = kwargs.get("json") if kwargs.get("json") is not None else (kwargs.get("data") if kwargs.get("data") else None)
+        if isinstance(body, dict):
+            body = {k: ("***" if k.lower() in ("password", "token", "smscode") else v) for k, v in body.items()}
+        self._last_response = response
         self._request_history.append({
             "method": method,
             "url": url,
-            "body": kwargs.get("json") if kwargs.get("json") is not None else (kwargs.get("data") if kwargs.get("data") else None),
+            "body": body,
             "response": {
                 "status": response.status_code,
                 "json": resp_json,

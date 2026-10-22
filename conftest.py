@@ -15,6 +15,12 @@ import uuid
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8")
+    if sys.platform == "win32":
+        try:
+            import ctypes
+            ctypes.windll.kernel32.SetConsoleOutputCP(65001)
+        except Exception:
+            pass
     os.environ["PYTHONIOENCODING"] = "utf-8"
     os.environ["PYTHONUTF8"] = "1"
 
@@ -36,7 +42,9 @@ def pytest_collection_modifyitems(items):
             title = doc.strip().split('\n')[0].strip()
             if title:
                 _test_titles[item.nodeid] = title
-                item.name = title
+                base_name = item.name.split('[')[0]
+                params = item.name[len(base_name):]
+                item.name = f"{title}{params}"
 
 
 def pytest_html_report_title(report):
@@ -67,7 +75,7 @@ def pytest_html_results_table_row(report, cells):
 @pytest.fixture(scope="session")
 def config():
     """返回全局配置字典，包含基础URL、登录接口、用户凭证等"""
-    from config import BASE_URL, LOGIN_URL, USERNAME, PASSWORD, DB_CONFIG, DB_ENABLED, DB_CLEANUP_AFTER_TEST, DB_CLEANUP_MODULES, PG_CONFIG, PG_CLEANUP_UUID, PG_CLEANUP_ENABLED, LOGIN_TYPE, WEB_TYPE
+    from config import BASE_URL, LOGIN_URL, USERNAME, PASSWORD, DB_CONFIG, DB_ENABLED, DB_CLEANUP_AFTER_TEST, DB_CLEANUP_MODULES, PG_CONFIG, PG_CLEANUP_UUID, PG_CLEANUP_ENABLED, LOGIN_TYPE, WEB_TYPE, PROVIDER_USERNAME, PROVIDER_PASSWORD, PROVIDER_WEB_TYPE, DISABLED_ADMIN_USERNAME, DISABLED_ADMIN_PASSWORD, DISABLED_PROVIDER_USERNAME, DISABLED_PROVIDER_PASSWORD, DELETED_ADMIN_USERNAME, DELETED_ADMIN_PASSWORD
     return {
         "base_url": BASE_URL,
         "login_url": LOGIN_URL,
@@ -75,6 +83,15 @@ def config():
         "password": PASSWORD,
         "login_type": LOGIN_TYPE,
         "web_type": WEB_TYPE,
+        "provider_username": PROVIDER_USERNAME,
+        "provider_password": PROVIDER_PASSWORD,
+        "provider_web_type": PROVIDER_WEB_TYPE,
+        "disabled_admin_username": DISABLED_ADMIN_USERNAME,
+        "disabled_admin_password": DISABLED_ADMIN_PASSWORD,
+        "disabled_provider_username": DISABLED_PROVIDER_USERNAME,
+        "disabled_provider_password": DISABLED_PROVIDER_PASSWORD,
+        "deleted_admin_username": DELETED_ADMIN_USERNAME,
+        "deleted_admin_password": DELETED_ADMIN_PASSWORD,
         "db_config": DB_CONFIG,
         "db_enabled": DB_ENABLED,
         "db_cleanup_after_test": DB_CLEANUP_AFTER_TEST,
@@ -102,8 +119,8 @@ def logged_in_client(config, token_manager):
         response = client.login(
             username=config["username"],
             password=config["password"],
-            login_type=config.get("LOGIN_TYPE", 1),
-            web_type=config.get("WEB_TYPE", 0),
+            login_type=config.get("login_type", 1),
+            web_type=config.get("web_type", 0),
         )
         if response.status_code == 200:
             data = response.json()
@@ -272,7 +289,11 @@ def pytest_runtest_makereport(item, call):
         nodeid = item.nodeid
         parts = nodeid.split("::")
         module_path = parts[0] if len(parts) > 0 else ""
-        case_name = parts[-1] if len(parts) > 2 else item.name
+        params = getattr(getattr(item, "callspec", None), "params", None) or {}
+        case_name = params.get("name") or (parts[-1] if len(parts) > 2 else item.name)
+        case_desc = (params.get("desc")
+                     or (getattr(item.obj, "__doc__", "") or "").strip()
+                     or case_name)
         module_name = module_path.replace("test_cases/", "").replace("\\", "/").split("/")[0] if module_path else "unknown"
 
         status = "passed" if report.passed else "failed"
@@ -286,14 +307,19 @@ def pytest_runtest_makereport(item, call):
         history = getattr(client, "_request_history", None) if client else None
 
         if history:
-            last_entry = history[-1] if history else None
-            if last_entry:
-                import json
-                request_data = json.dumps(last_entry.get("body"), ensure_ascii=False)
-                response_data = json.dumps(last_entry.get("response"), ensure_ascii=False)
+            import json
+            request_data = json.dumps(
+                [{"method": h.get("method"), "url": h.get("url"), "body": h.get("body")} for h in history],
+                ensure_ascii=False,
+            )
+            response_data = json.dumps([h.get("response") for h in history], ensure_ascii=False)
 
-        module_id = db_helper.save_test_module(module_name=module_name, module_desc=module_name)
-        case_id = db_helper.save_test_case(module_id=module_id, case_name=case_name, case_desc=getattr(item.obj, '__doc__', '') or "", priority="P1")
+        instance = getattr(item, "instance", None)
+        if instance is not None:
+            module_name = getattr(instance, "_module_name", module_name)
+        module_desc = getattr(instance, "_module_desc", module_name) if instance else module_name
+        module_id = db_helper.save_test_module(module_name=module_name, module_desc=module_desc)
+        case_id = db_helper.save_test_case(module_id=module_id, case_name=case_name, case_desc=case_desc, priority="P1")
         db_helper.save_test_result(
             case_id=case_id,
             execution_id=item.funcargs.get("execution_id", ""),

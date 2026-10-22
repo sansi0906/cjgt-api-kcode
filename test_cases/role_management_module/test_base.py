@@ -1,11 +1,10 @@
 """
-test_base.py - 角色管理模块测试基类
-===================================================
-提供角色管理模块的通用测试设置和辅助方法
+test_base.py - 角色管理测试基类
+=================================
+提供角色管理模块的通用造数、清理与断言辅助方法
 """
 
-import time
-import random
+import uuid
 
 import pytest
 from utils.base_test import BaseTest
@@ -15,34 +14,33 @@ class TestBase(BaseTest):
     _module_name = "role_management_module"
     _module_desc = "角色管理模块"
 
+    @staticmethod
+    def _unique(prefix="AUTO", length=6):
+        """生成唯一标识"""
+        return prefix + str(uuid.uuid4().int % (10 ** length)).zfill(length)
+
     def _unique_role_name(self):
-        """生成唯一的角色名称，格式：测试角色+秒级时间戳"""
-        return f"测试角色{int(time.time())}"
+        return "自动化角色" + str(uuid.uuid4().int % 10**6).zfill(6)
 
-    def _unique_role_remark(self):
-        """生成唯一的角色备注，格式：备注+随机数"""
-        return f"备注{random.randint(1000, 9999)}"
+    def _unique_role_no(self):
+        return self._unique("AUTO", 8)
 
-    def _create_role(self, role_name=None, status=1, role_remark=None):
-        """创建角色并通过分页查询获取角色ID
-
-        Returns:
-            (role_id, role_name, role_remark) 元组
-        """
+    def _create_role(self, role_name=None, role_no=None, status=1, role_remark="自动化创建"):
+        """创建角色，返回 (role_id, role_name, role_no)"""
         role_name = role_name or self._unique_role_name()
-        role_remark = role_remark or self._unique_role_remark()
-        role_id, _ = self._create_and_get_id(
-            create_fn=lambda: self.client.save_role(
-                role_name=role_name,
-                status=status,
-                role_remark=role_remark,
-            ),
-            query_fn=lambda: self.client.page_roles(page_num=1, page_size=10, role_name=role_name),
-            match_key="roleName",
-            match_value=role_name,
+        role_no = role_no or self._unique_role_no()
+        response = self.client.save_role(
+            role_name=role_name,
+            role_no=role_no,
+            status=status,
+            role_remark=role_remark,
         )
-        return role_id, role_name, role_remark
+        self.validator.assert_status_code(response, 200)
+        self.assert_api_success(response.json())
+        row = self.fetch_business_row("cjgt_platform_role", "role_no = %s", (role_no,))
+        assert row, f"创建角色未落库: {role_no}"
+        self.register_business_row("cjgt_platform_role", row["id"])
+        return row["id"], role_name, role_no
 
-    def _delete_test_data(self, item_id):
-        """删除测试数据"""
-        self.client.delete_role(role_id=item_id)
+    def _role_row(self, role_id):
+        return self.fetch_business_row("cjgt_platform_role", "id = %s", (role_id,))

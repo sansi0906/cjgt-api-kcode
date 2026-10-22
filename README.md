@@ -99,9 +99,9 @@ python run_tests.py
 
 | 模块 | 接口数 | 用例数 | 状态 |
 |------|--------|--------|------|
-| 登录模块 | 3 | 13 | ✅ |
-| 平台用户管理 | 7 | 26 | ✅ |
-| 角色管理 | 8 | 20+ | ✅ |
+| 登录模块 | 3 | 28 | ✅ |
+| 平台用户管理 | 7 | 30 | ✅ |
+| 角色管理 | 9 | 31 | ✅ |
 | 服务项目配置 | 5 | 11 | ✅ |
 | 服务商管理 | 7 | 15 | ✅ |
 | 服务定价配置 | 4 | 10 | ✅ |
@@ -206,3 +206,19 @@ python utils/cleanup_pricing.py
 ## 许可证
 
 MIT License
+
+## Windows 终端中文乱码（UTF-8）
+
+接口返回的中文在部分 Windows PowerShell 终端显示为乱码（如 `用户不存在或状态失效` 显示为 `�û������ڻ�״̬ʧЧ`），
+这是终端代码页（默认 GBK/936）与 UTF-8 不匹配导致，**源码与接口本身无问题**。
+
+解决方式（任选其一，建议全部执行）：
+
+```powershell
+chcp 65001                      # 切换当前终端为 UTF-8
+$env:PYTHONIOENCODING = "utf-8" # Python 输出使用 UTF-8
+```
+
+也可在系统设置中勾选「Beta: Use Unicode UTF-8 for worldwide language support」。
+项目 `conftest.py` 已在运行前自动执行 `sys.stdout.reconfigure(encoding="utf-8")`，
+若仍显示乱码，说明是终端代码页问题，按上述方式处理即可。

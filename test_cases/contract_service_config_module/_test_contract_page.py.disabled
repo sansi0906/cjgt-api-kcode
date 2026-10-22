@@ -1,0 +1,14 @@
+"""test_contract_page.py - 合同分页查询接口测试"""
+import pytest
+from .test_base import TestBase
+
+
+class TestContractPage(TestBase):
+    @pytest.mark.smoke
+    def test_page_contracts(self):
+        response = self.client.post("/platform/contract/page", json={"pageNum": 1, "pageSize": 10})
+        self.validator.assert_status_code(response, 200)
+
+    def test_page_contracts_empty_keyword(self):
+        response = self.client.post("/platform/contract/page", json={"pageNum": 1, "pageSize": 5, "contractNo": "NON_EXISTENT"})
+        self.validator.assert_status_code(response, 200)

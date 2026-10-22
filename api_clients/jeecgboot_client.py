@@ -113,7 +113,8 @@ class JeecgBootClient(BaseClient):
         """获取全国省市区街道四级区域树"""
         return self.post("/common/area/treeAll")
 
-    def add_service_item(self, item_name, billing_method, subtitle=None, icon_url=None, item_desc=None):
+    def add_service_item(self, item_name, billing_method, subtitle=None, icon_url=None,
+                         item_desc=None, item_code=None):
         """新增服务项目"""
         return self._save("/platform/serviceItem/add",
             itemName=item_name,
@@ -121,6 +122,7 @@ class JeecgBootClient(BaseClient):
             subtitle=subtitle,
             iconUrl=icon_url,
             itemDesc=item_desc,
+            itemCode=item_code,
         )
 
     def page_service_items(self, page_num=1, page_size=10, item_name=None, billing_method=None, is_display=None, start_time=None, end_time=None):
@@ -143,10 +145,11 @@ class JeecgBootClient(BaseClient):
         return self.post("/platform/serviceItem/listDisplay", json=payload)
 
     def update_service_item_status(self, item_id, is_display):
-        """切换服务项目展示状态"""
-        return self._change_status("/platform/serviceItem/updateStatus", item_id, is_display)
+        """切换服务项目展示状态（字段为 isDisplay）"""
+        return self.post("/platform/serviceItem/updateStatus", json={"id": item_id, "isDisplay": is_display})
 
-    def edit_service_item(self, item_id, item_name, billing_method, subtitle=None, icon_url=None, item_desc=None):
+    def edit_service_item(self, item_id, item_name, billing_method, subtitle=None, icon_url=None,
+                          item_desc=None, item_code=None):
         """编辑服务项目"""
         return self._edit("/platform/serviceItem/edit", item_id,
             itemName=item_name,
@@ -154,6 +157,7 @@ class JeecgBootClient(BaseClient):
             subtitle=subtitle,
             iconUrl=icon_url,
             itemDesc=item_desc,
+            itemCode=item_code,
         )
 
     def execute_api_case(self, case_id):
@@ -273,10 +277,11 @@ class JeecgBootClient(BaseClient):
         """删除经营范围"""
         return self._delete("/platform/businessScope/del", scope_id)
 
-    def save_role(self, role_name, status=1, role_remark=None):
+    def save_role(self, role_name, role_no, status=1, role_remark=None):
         """新增角色"""
         return self._save("/common/role/save",
             roleName=role_name,
+            roleNo=role_no,
             status=status,
             roleRemark=role_remark,
         )
@@ -294,10 +299,11 @@ class JeecgBootClient(BaseClient):
         """获取角色详情"""
         return self._detail("/common/role/detail", role_id)
 
-    def edit_role(self, role_id, role_name, status=1, role_remark=None):
+    def edit_role(self, role_id, role_name, role_no, status=1, role_remark=None):
         """编辑角色"""
         return self._edit("/common/role/edit", role_id,
             roleName=role_name,
+            roleNo=role_no,
             status=status,
             roleRemark=role_remark,
         )
@@ -312,7 +318,7 @@ class JeecgBootClient(BaseClient):
 
     def select_role_all(self):
         """查询所有角色列表（根据当前用户WebType过滤）"""
-        return self.post("/common/role/selectRoleAll")
+        return self.post("/common/role/selectRoleAll", json={})
 
     def select_menus_by_role_id(self, role_id):
         """根据角色ID查询菜单权限信息"""

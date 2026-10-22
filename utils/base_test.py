@@ -18,6 +18,7 @@ from utils.validator import ResponseValidator
 class BaseTest:
     _module_name = "unknown"
     _module_desc = "未知模块"
+    _skip_auto_login = False
 
     @pytest.fixture(autouse=True)
     def setup(self, config, execution_id, db_helper, pg_cleanup, request):
@@ -29,13 +30,22 @@ class BaseTest:
         self.db_helper = db_helper
         self.pg_cleanup = pg_cleanup
         self._created_ids = []
+        self._business_rows = []
         self._module_id = None
         self._test_name = request.node.name
-        token = self.login()
-        self.client.set_token(token)
+        if not self._skip_auto_login:
+            token = self.login()
+            self.client.set_token(token)
 
     def teardown_method(self):
-        """清理测试创建的接口数据"""
+        """清理测试创建的接口数据与自造业务数据"""
+        for table, row_id in getattr(self, "_business_rows", []):
+            try:
+                self.delete_business_row(table, row_id)
+            except Exception as e:
+                import logging
+                logging.warning(f"Failed to cleanup business row {table}#{row_id}: {e}")
+        self._business_rows = []
         for item_id in getattr(self, "_created_ids", []):
             try:
                 self._delete_test_data(item_id)
@@ -72,13 +82,73 @@ class BaseTest:
         """删除测试数据，由子类实现具体删除逻辑"""
         pass
 
+    # ==================== 业务库数据操作（165 PostgreSQL） ====================
+
+    def register_business_row(self, table, row_id):
+        """登记自造的业务数据行，teardown 时自动物理删除"""
+        if not hasattr(self, "_business_rows"):
+            self._business_rows = []
+        self._business_rows.append((table, row_id))
+        return row_id
+
+    def insert_business_row(self, table, data, return_id=True):
+        """向业务库插入一行数据并登记清理
+
+        Args:
+            table: 表名
+            data: 字段字典
+            return_id: 是否返回自增 id
+
+        Returns:
+            插入行的 id（return_id 为 False 时返回影响行数）
+        """
+        pg_helper = self._get_pg_helper()
+        columns = ", ".join(data.keys())
+        placeholders = ", ".join(["%s"] * len(data))
+        sql = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"
+        if return_id:
+            sql += " RETURNING id"
+        result = pg_helper.execute(sql, tuple(data.values()))
+        row_id = result if not return_id else pg_helper.fetch_one(
+            f"SELECT id FROM {table} ORDER BY id DESC LIMIT 1"
+        )
+        if return_id:
+            row_id = row_id["id"] if isinstance(row_id, dict) else row_id
+            self.register_business_row(table, row_id)
+        return row_id
+
+    def update_business_row(self, table, row_id, data):
+        """更新业务库中的一行数据"""
+        pg_helper = self._get_pg_helper()
+        sets = ", ".join(f"{k} = %s" for k in data)
+        pg_helper.execute(f"UPDATE {table} SET {sets} WHERE id = %s", tuple(data.values()) + (row_id,))
+        return row_id
+
+    def delete_business_row(self, table, row_id):
+        """物理删除业务库中的一行数据"""
+        pg_helper = self._get_pg_helper()
+        return pg_helper.execute(f"DELETE FROM {table} WHERE id = %s", (row_id,))
+
+    def fetch_business_row(self, table, where_sql, params=None):
+        """按条件查询业务库中的一行数据"""
+        pg_helper = self._get_pg_helper()
+        return pg_helper.fetch_one(f"SELECT * FROM {table} WHERE {where_sql}", params)
+
+    def assert_api_success(self, data):
+        """断言业务响应成功（统一走 validator）"""
+        return self.validator.assert_biz_success(data)
+
+    def assert_api_failure(self, data, expected_code=None):
+        """断言业务响应失败（统一走 validator）"""
+        return self.validator.assert_biz_failure(data, expected_code)
+
     def login(self, username=None, password=None, login_type=None, web_type=None):
         """执行登录并返回 Token"""
         response = self.client.login(
             username=username or self.config["username"],
             password=password or self.config["password"],
-            login_type=login_type or self.config.get("LOGIN_TYPE", 1),
-            web_type=web_type or self.config.get("WEB_TYPE", 0),
+            login_type=login_type if login_type is not None else self.config.get("login_type", 1),
+            web_type=web_type if web_type is not None else self.config.get("web_type", 0),
         )
         assert response.status_code == 200
         data = response.json()
@@ -87,16 +157,16 @@ class BaseTest:
 
     def assert_login_success(self, data):
         """断言登录成功"""
-        assert data.get("code") in ("0", "00"), f"Login failed: {data}"
+        self.assert_api_success(data)
         assert data.get("data", {}).get("token"), "Token is missing in response"
 
-    def assert_login_failure(self, data):
+    def assert_login_failure(self, data, expected_code=None):
         """断言登录失败"""
-        assert data.get("code") not in ("0", "00"), f"Expected failure but got success: {data}"
+        self.assert_api_failure(data, expected_code)
 
     def assert_save_success(self, data, message=None):
         """断言操作成功"""
-        assert data.get("code") in ("0", "00"), f"Operation failed: {data}"
+        self.assert_api_success(data)
         if message:
             assert data.get("message") == message, f"Unexpected message: {data.get('message')}"
 
@@ -114,9 +184,7 @@ class BaseTest:
 
     def assert_save_failure(self, data, expected_code=None):
         """断言操作失败"""
-        assert data.get("code") not in ("0", "00"), f"Expected failure but got success: {data}"
-        if expected_code:
-            assert data.get("code") == expected_code, f"Expected code {expected_code}, got: {data.get('code')}"
+        self.assert_api_failure(data, expected_code)
 
     def _get_module_id(self, module_name, module_desc=""):
         """获取或创建模块ID"""

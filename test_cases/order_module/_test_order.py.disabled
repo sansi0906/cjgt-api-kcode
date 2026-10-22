@@ -1,0 +1,23 @@
+﻿import pytest
+from .test_base import TestBase
+
+EXISTING_ORDER_ID = 1
+
+
+class TestOrder(TestBase):
+    @pytest.mark.smoke
+    def test_page_order(self):
+        response = self.client.post("/platform/order/page", json={"pageNum": 1, "pageSize": 10})
+        self.validator.assert_status_code(response, 200)
+
+    def test_detail_order(self):
+        response = self.client.post("/platform/order/detail", json={"id": EXISTING_ORDER_ID})
+        self.validator.assert_status_code(response, 200)
+
+    def test_check_provider(self):
+        response = self.client.get("/platform/order/checkProvider")
+        self.validator.assert_status_code(response, 200)
+
+    def test_page_order_empty(self):
+        response = self.client.post("/platform/order/page", json={"pageNum": 1, "pageSize": 5, "orderNo": "NON_EXISTENT"})
+        self.validator.assert_status_code(response, 200)

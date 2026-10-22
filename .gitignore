@@ -12,3 +12,11 @@ build/
 # 敏感配置（含数据库密码、API地址、登录账号）
 config.py
 data/login_data.json
+
+# 生成产物（用例清单、覆盖率、报告）
+.coverage
+htmlcov/
+allure-results/
+test_cases.csv
+test_cases_csv/
+test_cases_csv_all/

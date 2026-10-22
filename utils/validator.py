@@ -6,6 +6,19 @@ validator.py - 响应验证工具
 """
 
 
+class BizCode:
+    """业务返回码常量（/sys/login 等接口通用）"""
+
+    SUCCESS = ("0", "00")
+    ACCESS_DENIED = "01000003"        # 访问无权限-拦截
+    TOKEN_INVALID = "01000005"        # 用户信息获取失败，请重新登录
+    USER_INVALID = "01000009"         # 用户不存在或状态失效
+    SMS_CODE_REQUIRED = "01000010"    # 短信验证码不能为空
+    PASSWORD_ERROR = "01000011"       # 密码错误
+    UNSUPPORTED_LOGIN = "01000014"    # 不支持的登录方式
+    SYSTEM_BUSY = "02"                # 系统繁忙，请稍后再试
+
+
 class ResponseValidator:
     @staticmethod
     def assert_status_code(response, expected_code=200):
@@ -56,3 +69,27 @@ class ResponseValidator:
             f"Response time {response.elapsed.total_seconds() * 1000:.0f}ms "
             f"exceeds limit {max_ms}ms"
         )
+
+    @staticmethod
+    def assert_biz_success(data):
+        """断言业务码为成功"""
+        assert data.get("code") in BizCode.SUCCESS, f"Expected success, got: {data}"
+        return data
+
+    @staticmethod
+    def assert_biz_failure(data, expected_code=None):
+        """断言业务码为失败，可校验具体错误码"""
+        assert data.get("code") not in BizCode.SUCCESS, f"Expected failure but got success: {data}"
+        if expected_code:
+            assert data.get("code") == expected_code, (
+                f"Expected code {expected_code}, got: {data.get('code')} ({data.get('message')})"
+            )
+        return data
+
+    @staticmethod
+    def assert_biz_code(data, expected_code):
+        """断言业务码等于指定值"""
+        assert data.get("code") == expected_code, (
+            f"Expected code {expected_code}, got: {data.get('code')} ({data.get('message')})"
+        )
+        return data

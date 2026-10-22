@@ -1,20 +1,88 @@
 [
   {
     "name": "test_login_success",
-    "username": "YOUR_TEST_USERNAME",
-    "password": "YOUR_TEST_PASSWORD",
-    "expected_status": 200
+    "desc": "管理后台账号密码登录成功",
+    "role": "admin",
+    "expected_status": 200,
+    "expect_success": true
   },
   {
     "name": "test_login_invalid_user",
+    "desc": "管理后台账号不存在",
+    "role": "admin",
     "username": "wrong_user",
-    "password": "YOUR_TEST_PASSWORD",
-    "expected_status": 200
+    "expected_status": 200,
+    "expect_success": false,
+    "expect_code": "01000009"
   },
   {
     "name": "test_login_invalid_pass",
-    "username": "YOUR_TEST_USERNAME",
+    "desc": "管理后台账号密码错误",
+    "role": "admin",
     "password": "wrong_pass",
-    "expected_status": 200
+    "expected_status": 200,
+    "expect_success": false,
+    "expect_code": "01000011"
+  },
+  {
+    "name": "test_login_empty_username",
+    "desc": "管理后台账号用户名为空",
+    "role": "admin",
+    "username": "",
+    "expected_status": 200,
+    "expect_success": false,
+    "expect_code": "01000009"
+  },
+  {
+    "name": "test_login_empty_password",
+    "desc": "管理后台账号密码为空",
+    "role": "admin",
+    "password": "",
+    "expected_status": 200,
+    "expect_success": false,
+    "expect_code": "01000011"
+  },
+  {
+    "name": "test_provider_login_success",
+    "desc": "服务商后台账号密码登录成功",
+    "role": "provider",
+    "expected_status": 200,
+    "expect_success": true
+  },
+  {
+    "name": "test_provider_login_invalid_user",
+    "desc": "服务商账号不存在",
+    "role": "provider",
+    "username": "wrong_provider",
+    "expected_status": 200,
+    "expect_success": false,
+    "expect_code": "01000009"
+  },
+  {
+    "name": "test_provider_login_invalid_pass",
+    "desc": "服务商账号密码错误",
+    "role": "provider",
+    "password": "wrong_pass",
+    "expected_status": 200,
+    "expect_success": false,
+    "expect_code": "01000011"
+  },
+  {
+    "name": "test_provider_login_empty_username",
+    "desc": "服务商账号用户名为空",
+    "role": "provider",
+    "username": "",
+    "expected_status": 200,
+    "expect_success": false,
+    "expect_code": "01000009"
+  },
+  {
+    "name": "test_provider_login_empty_password",
+    "desc": "服务商账号密码为空",
+    "role": "provider",
+    "password": "",
+    "expected_status": 200,
+    "expect_success": false,
+    "expect_code": "01000011"
   }
 ]
