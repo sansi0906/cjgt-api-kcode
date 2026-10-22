@@ -62,6 +62,31 @@ class BaseClient:
             self._request_history.pop(0)
         return response
 
+    def post_files(self, path, files=None, data=None, **kwargs):
+        """POST multipart/form-data 请求
+
+        Args:
+            path: 接口地址
+            files: 文件字典，格式 {"field_name": ("filename", file_obj, content_type)}
+            data: 表单附加字段
+        Returns:
+            requests.Response
+        """
+        # multipart 请求必须清掉 session 默认的 application/json 头（置 None 表示删除），
+        # 否则 requests 无法自动生成带 boundary 的 Content-Type
+        headers = {k: v for k, v in self.session.headers.items() if k.lower() != "content-type"}
+        headers["Content-Type"] = None
+        if self.token:
+            headers["token"] = self.token
+        return self.session.post(
+            self.base_url + path,
+            files=files,
+            data=data,
+            headers=headers,
+            timeout=self.timeout,
+            **kwargs
+        )
+
     def get(self, path, **kwargs):
         return self.request("GET", path, **kwargs)
 

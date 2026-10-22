@@ -1,0 +1,168 @@
+[
+  {
+    "name": "save_success",
+    "desc": "新增合同服务成功",
+    "api": "save",
+    "need_item": true,
+    "payload": {
+      "title": "${unique_title}",
+      "serviceItemId": "${service_item_id}",
+      "content": "合同服务内容",
+      "priceContent": "价格内容"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "save_duplicate_service_item",
+    "desc": "同一服务项目重复新增合同服务",
+    "api": "save",
+    "need_item": true,
+    "payload": {
+      "title": "${unique_title}",
+      "serviceItemId": "${service_item_id}",
+      "content": "合同服务内容",
+      "priceContent": "价格内容"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_content",
+    "desc": "新增合同服务缺少内容",
+    "api": "save",
+    "need_item": true,
+    "payload": {
+      "title": "${unique_title}",
+      "serviceItemId": "${service_item_id}",
+      "priceContent": "价格内容"
+    },
+    "expect_success": false,
+    "expect_code": "02",
+    "note": "后端未做必填校验，直接抛系统异常"
+  },
+  {
+    "name": "save_missing_service_item_id",
+    "desc": "新增合同服务缺少服务项目",
+    "api": "save",
+    "payload": {
+      "title": "${unique_title}",
+      "content": "内容",
+      "priceContent": "价格内容"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "paging_normal",
+    "desc": "分页查询合同服务成功",
+    "api": "paging",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "paging_filter_by_service_item",
+    "desc": "按服务项目查询合同服务",
+    "api": "paging",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "serviceItemId": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "paging_filter_by_title",
+    "desc": "按标题模糊查询合同服务",
+    "api": "paging",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "title": "自动化合同服务"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_success",
+    "desc": "查询合同服务详情成功",
+    "api": "detail",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_unknown_id",
+    "desc": "查询不存在的合同服务详情",
+    "api": "detail",
+    "payload": {
+      "id": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "detail_missing_id",
+    "desc": "查询合同服务详情缺少ID",
+    "api": "detail",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "edit_success",
+    "desc": "编辑合同服务成功",
+    "api": "edit",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "title": "${entity_name}改",
+      "serviceItemId": "${service_item_id}",
+      "content": "新内容",
+      "priceContent": "新价格"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "edit_missing_id",
+    "desc": "编辑合同服务缺少ID",
+    "api": "edit",
+    "payload": {
+      "title": "${unique_title}",
+      "serviceItemId": 1
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "delete_success",
+    "desc": "删除合同服务成功",
+    "api": "delete",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "delete_unknown_id",
+    "desc": "删除不存在的合同服务",
+    "api": "delete",
+    "payload": {
+      "id": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "delete_missing_id",
+    "desc": "删除合同服务缺少ID",
+    "api": "delete",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  }
+]

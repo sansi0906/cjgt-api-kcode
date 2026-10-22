@@ -1,0 +1,105 @@
+[
+  {
+    "name": "tree_normal",
+    "desc": "查询服务项目定价树成功",
+    "api": "tree",
+    "payload": {
+      "serviceItemId": 289
+    },
+    "expect_success": true
+  },
+  {
+    "name": "tree_missing_service_item_id",
+    "desc": "查询定价树缺少服务项目ID",
+    "api": "tree",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "tree_by_areas",
+    "desc": "按区域查询定价树成功",
+    "api": "tree_by_areas",
+    "payload": {
+      "serviceItemId": 289,
+      "areaList": "${area_path}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "tree_by_areas_missing_service_item_id",
+    "desc": "按区域查询定价树缺少服务项目ID",
+    "api": "tree_by_areas",
+    "payload": {
+      "areaList": "${area_path}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "update_pricing_success",
+    "desc": "更新服务定价成功",
+    "api": "update_pricing",
+    "need_pricing": true,
+    "payload": {
+      "serviceItemId": 289,
+      "pendingAmount": 888.0,
+      "areaList": "${area_path}",
+      "effectiveTime": "2027-01-01 00:00:00"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "update_pricing_missing_amount",
+    "desc": "更新定价缺少待生效金额",
+    "api": "update_pricing",
+    "need_pricing": true,
+    "payload": {
+      "serviceItemId": 289,
+      "areaList": "${area_path}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "update_pricing_missing_area_list",
+    "desc": "更新定价缺少区域列表",
+    "api": "update_pricing",
+    "need_pricing": true,
+    "payload": {
+      "serviceItemId": 289,
+      "pendingAmount": 888.0
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "update_pricing_missing_service_item_id",
+    "desc": "更新定价缺少服务项目ID",
+    "api": "update_pricing",
+    "payload": {
+      "pendingAmount": 888.0,
+      "areaList": "${area_path}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "update_pricing_area_without_record",
+    "desc": "更新无定价记录的区域",
+    "api": "update_pricing",
+    "payload": {
+      "serviceItemId": 289,
+      "pendingAmount": 888.0,
+      "areaList": [
+        {
+          "code": "999999999999",
+          "name": "不存在的省",
+          "level": "province"
+        }
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "E01000001"
+  }
+]

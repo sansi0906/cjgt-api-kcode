@@ -1,0 +1,263 @@
+[
+  {
+    "name": "save_success",
+    "desc": "新增知识库成功",
+    "api": "save",
+    "payload": {
+      "title": "${unique_title}",
+      "content": "知识内容",
+      "consultType": 1,
+      "displayPosition": [
+        0,
+        1
+      ],
+      "applicableArea": [
+        {
+          "provinceAreaCode": "120000",
+          "provinceAreaName": "天津市",
+          "cityAreaCode": "120100",
+          "cityAreaName": "天津市",
+          "districtAreaCode": "120101",
+          "districtAreaName": "和平区"
+        }
+      ]
+    },
+    "expect_success": true
+  },
+  {
+    "name": "save_missing_applicable_area",
+    "desc": "新增知识库缺少适用区域",
+    "api": "save",
+    "payload": {
+      "title": "${unique_title}",
+      "content": "知识内容",
+      "consultType": 1,
+      "displayPosition": [
+        0
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_display_position",
+    "desc": "新增知识库缺少展示位置",
+    "api": "save",
+    "payload": {
+      "title": "${unique_title}",
+      "content": "知识内容",
+      "consultType": 1,
+      "applicableArea": [
+        {
+          "provinceAreaCode": "120000",
+          "provinceAreaName": "天津市",
+          "cityAreaCode": "120100",
+          "cityAreaName": "天津市",
+          "districtAreaCode": "120101",
+          "districtAreaName": "和平区"
+        }
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "page_normal",
+    "desc": "分页查询知识库成功",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_title",
+    "desc": "按标题模糊查询知识库",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "title": "自动化知识"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_consult_type",
+    "desc": "按咨询类型查询知识库",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "consultType": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_display_position",
+    "desc": "按展示位置查询知识库",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "displayPosition": "0"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_success",
+    "desc": "查询知识库详情成功",
+    "api": "detail",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_unknown_id",
+    "desc": "查询不存在的知识库详情",
+    "api": "detail",
+    "payload": {
+      "id": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000009"
+  },
+  {
+    "name": "detail_missing_id",
+    "desc": "查询知识库详情缺少ID",
+    "api": "detail",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "edit_success",
+    "desc": "编辑知识库成功",
+    "api": "edit",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "title": "${entity_name}改",
+      "content": "新内容",
+      "consultType": 2,
+      "displayPosition": [
+        1
+      ],
+      "applicableArea": [
+        {
+          "provinceAreaCode": "120000",
+          "provinceAreaName": "天津市",
+          "cityAreaCode": "120100",
+          "cityAreaName": "天津市",
+          "districtAreaCode": "120101",
+          "districtAreaName": "和平区"
+        }
+      ]
+    },
+    "expect_success": true
+  },
+  {
+    "name": "edit_missing_id",
+    "desc": "编辑知识库缺少ID",
+    "api": "edit",
+    "payload": {
+      "title": "${unique_title}",
+      "content": "内容",
+      "consultType": 1,
+      "displayPosition": [
+        0
+      ],
+      "applicableArea": [
+        {
+          "provinceAreaCode": "120000",
+          "provinceAreaName": "天津市",
+          "cityAreaCode": "120100",
+          "cityAreaName": "天津市",
+          "districtAreaCode": "120101",
+          "districtAreaName": "和平区"
+        }
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "edit_unknown_id",
+    "desc": "编辑不存在的知识库",
+    "api": "edit",
+    "payload": {
+      "id": 99999999,
+      "title": "x",
+      "content": "内容",
+      "consultType": 1,
+      "displayPosition": [
+        0
+      ],
+      "applicableArea": [
+        {
+          "provinceAreaCode": "120000",
+          "provinceAreaName": "天津市",
+          "cityAreaCode": "120100",
+          "cityAreaName": "天津市",
+          "districtAreaCode": "120101",
+          "districtAreaName": "和平区"
+        }
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000009"
+  },
+  {
+    "name": "change_status_disable",
+    "desc": "禁用知识库成功",
+    "api": "change_status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "status": 0
+    },
+    "expect_success": true
+  },
+  {
+    "name": "change_status_enable",
+    "desc": "启用知识库成功",
+    "api": "change_status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "status": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "change_status_missing_status",
+    "desc": "修改知识库状态缺少状态值",
+    "api": "change_status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "delete_success",
+    "desc": "删除知识库成功",
+    "api": "delete",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "delete_missing_id",
+    "desc": "删除知识库缺少ID",
+    "api": "delete",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  }
+]

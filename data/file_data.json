@@ -1,0 +1,73 @@
+[
+  {
+    "name": "upload_png",
+    "desc": "上传PNG文件成功",
+    "api": "upload",
+    "upload": true,
+    "expect_success": true
+  },
+  {
+    "name": "original_name",
+    "desc": "获取文件原名称成功",
+    "api": "original_name",
+    "method": "GET",
+    "payload": {
+      "path": "${file_uri}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "download",
+    "desc": "下载文件成功",
+    "api": "download",
+    "method": "GET",
+    "raw": true,
+    "payload": {
+      "path": "${file_uri}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "pub_original_name",
+    "desc": "获取公开文件原名称成功",
+    "api": "pub_original_name",
+    "method": "GET",
+    "payload": {
+      "path": "${file_uri}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "pub_download",
+    "desc": "下载公开文件成功",
+    "api": "pub_download",
+    "method": "GET",
+    "raw": true,
+    "payload": {
+      "path": "${file_uri}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "api_download",
+    "desc": "api路径下载文件成功",
+    "api": "api_download",
+    "method": "GET",
+    "raw": true,
+    "payload": {
+      "path": "${file_uri}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "api_pub_download",
+    "desc": "api路径下载公开文件成功",
+    "api": "api_pub_download",
+    "method": "GET",
+    "raw": true,
+    "payload": {
+      "path": "${file_uri}"
+    },
+    "expect_success": true
+  }
+]

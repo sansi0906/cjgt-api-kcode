@@ -1,0 +1,74 @@
+[
+  {
+    "name": "page_normal",
+    "desc": "分页查询订单成功",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_order_no",
+    "desc": "按订单号查询",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "orderNo": "NON_EXISTENT"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_success",
+    "desc": "查询订单详情成功",
+    "api": "detail",
+    "need_order": true,
+    "payload": {
+      "id": "${order_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_unknown_id",
+    "desc": "查询不存在的订单详情",
+    "api": "detail",
+    "payload": {
+      "id": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000028"
+  },
+  {
+    "name": "detail_missing_id",
+    "desc": "查询订单详情缺少ID",
+    "api": "detail",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "check_provider",
+    "desc": "检查订单是否匹配服务商",
+    "api": "check_provider",
+    "method": "GET",
+    "need_order": true,
+    "payload": {
+      "orderId": "${order_id}"
+    },
+    "expect_success": true,
+    "note": "返回匹配服务商标识：0-无匹配 1-有匹配"
+  },
+  {
+    "name": "check_provider_unknown_order",
+    "desc": "检查不存在的订单",
+    "api": "check_provider",
+    "method": "GET",
+    "payload": {
+      "orderId": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000028"
+  }
+]

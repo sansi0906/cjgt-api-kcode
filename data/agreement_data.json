@@ -1,0 +1,133 @@
+[
+  {
+    "name": "save_success",
+    "desc": "新增协议成功",
+    "api": "save",
+    "free_agreement_type": 3,
+    "payload": {
+      "agreementName": "${unique_agreement_name}",
+      "agreementType": 3,
+      "agreementContent": "自动化协议内容"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "save_duplicate_type",
+    "desc": "新增重复协议类型",
+    "api": "save",
+    "payload": {
+      "agreementName": "${unique_agreement_name}",
+      "agreementType": 1,
+      "agreementContent": "内容"
+    },
+    "expect_success": false,
+    "expect_code": "E0100099"
+  },
+  {
+    "name": "save_missing_type",
+    "desc": "新增协议缺少协议类型",
+    "api": "save",
+    "payload": {
+      "agreementName": "${unique_agreement_name}",
+      "agreementContent": "内容"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_content",
+    "desc": "新增协议缺少协议内容",
+    "api": "save",
+    "payload": {
+      "agreementName": "${unique_agreement_name}",
+      "agreementType": 2
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "page_normal",
+    "desc": "分页查询协议成功",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_name",
+    "desc": "按协议名称模糊查询",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "agreementName": "自动化协议"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_type",
+    "desc": "按协议类型查询",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "agreementType": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_success",
+    "desc": "查询协议详情成功",
+    "api": "detail",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_unknown_id",
+    "desc": "查询不存在的协议详情",
+    "api": "detail",
+    "payload": {
+      "id": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000009"
+  },
+  {
+    "name": "detail_missing_id",
+    "desc": "查询协议详情缺少ID",
+    "api": "detail",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "edit_success",
+    "desc": "编辑协议成功",
+    "api": "edit",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "agreementName": "${entity_name}改",
+      "agreementType": 3,
+      "agreementContent": "新内容"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "edit_missing_id",
+    "desc": "编辑协议缺少ID",
+    "api": "edit",
+    "payload": {
+      "agreementName": "${unique_agreement_name}",
+      "agreementType": 1,
+      "agreementContent": "内容"
+    },
+    "expect_success": false,
+    "expect_code": "01000022"
+  }
+]

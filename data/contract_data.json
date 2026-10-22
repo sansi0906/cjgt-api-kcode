@@ -1,0 +1,33 @@
+[
+  {
+    "name": "page_normal",
+    "desc": "分页查询合同列表成功",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_contract_no",
+    "desc": "按合同编号查询",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "contractNo": "NON_EXISTENT"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_invalid_page_size",
+    "desc": "分页查询每页条数小于最小值",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 0
+    },
+    "expect_success": true
+  }
+]

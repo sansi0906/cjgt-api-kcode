@@ -1,0 +1,126 @@
+[
+  {
+    "name": "add_success",
+    "desc": "新增经营范围成功",
+    "api": "add",
+    "payload": {
+      "scopeName": "${unique_scope_name}",
+      "remark": "自动化备注"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "add_missing_name",
+    "desc": "新增经营范围缺少名称",
+    "api": "add",
+    "payload": {
+      "remark": "备注"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "paging_normal",
+    "desc": "分页查询经营范围成功",
+    "api": "paging",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "paging_filter_by_name",
+    "desc": "按名称模糊查询经营范围",
+    "api": "paging",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "scopeName": "自动化范围"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "edit_success",
+    "desc": "编辑经营范围成功",
+    "api": "edit",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "scopeName": "${entity_name}改",
+      "remark": "新备注"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "edit_missing_id",
+    "desc": "编辑经营范围缺少ID",
+    "api": "edit",
+    "payload": {
+      "scopeName": "${unique_scope_name}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "update_status_disable",
+    "desc": "禁用经营范围成功",
+    "api": "update_status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "isEnabled": 0
+    },
+    "expect_success": true
+  },
+  {
+    "name": "update_status_enable",
+    "desc": "启用经营范围成功",
+    "api": "update_status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "isEnabled": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "update_status_missing_id",
+    "desc": "切换经营范围状态缺少ID",
+    "api": "update_status",
+    "payload": {
+      "isEnabled": 1
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "delete_success",
+    "desc": "删除经营范围成功",
+    "api": "delete",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": true,
+    "pre_disable": true
+  },
+  {
+    "name": "delete_unknown_id",
+    "desc": "删除不存在的经营范围",
+    "api": "delete",
+    "payload": {
+      "id": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000046"
+  },
+  {
+    "name": "delete_missing_id",
+    "desc": "删除经营范围缺少ID",
+    "api": "delete",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "name": "area_tree_all",
+    "desc": "获取全量省市区三级树",
+    "api": "area_tree_all",
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "get_user_info",
+    "desc": "获取当前登录用户信息",
+    "api": "get_user_info",
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "platform_home",
+    "desc": "获取平台工作台首页数据",
+    "api": "platform_home",
+    "payload": {},
+    "expect_success": true,
+    "method": "GET"
+  }
+]

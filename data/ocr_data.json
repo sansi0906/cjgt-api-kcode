@@ -1,0 +1,92 @@
+[
+  {
+    "name": "platform_lic_with_invalid_file",
+    "desc": "营业执照识别（管理端）-图片不可用时返回系统异常",
+    "api": "platform_lic",
+    "method": "POST",
+    "payload": {
+      "file": "${file_uri}"
+    },
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "platform_id_card_front_with_invalid_file",
+    "desc": "身份证识别-正面（管理端）-图片不可用时返回系统异常",
+    "api": "platform_id_card_front",
+    "method": "POST",
+    "payload": {
+      "file": "${file_uri}"
+    },
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "platform_id_card_back_with_invalid_file",
+    "desc": "身份证识别-反面（管理端）-图片不可用时返回系统异常",
+    "api": "platform_id_card_back",
+    "method": "POST",
+    "payload": {
+      "file": "${file_uri}"
+    },
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "platform_identify_with_invalid_file",
+    "desc": "身份证人脸核验（管理端）-图片不可用时返回系统异常",
+    "api": "platform_identify",
+    "method": "GET",
+    "payload": {
+      "idNum": "110101199001015661",
+      "name": "张三"
+    },
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "api_lic_with_invalid_file",
+    "desc": "营业执照识别（服务商端）-图片不可用时返回系统异常",
+    "api": "api_lic",
+    "method": "POST",
+    "payload": {
+      "file": "${file_uri}"
+    },
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "api_id_card_front_with_invalid_file",
+    "desc": "身份证识别-正面（服务商端）-图片不可用时返回系统异常",
+    "api": "api_id_card_front",
+    "method": "POST",
+    "payload": {
+      "file": "${file_uri}"
+    },
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "api_id_card_back_with_invalid_file",
+    "desc": "身份证识别-反面（服务商端）-图片不可用时返回系统异常",
+    "api": "api_id_card_back",
+    "method": "POST",
+    "payload": {
+      "file": "${file_uri}"
+    },
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "api_identify_with_invalid_file",
+    "desc": "身份证人脸核验（服务商端）-图片不可用时返回系统异常",
+    "api": "api_identify",
+    "method": "GET",
+    "payload": {
+      "idNum": "110101199001015661",
+      "name": "张三"
+    },
+    "expect_success": false,
+    "expect_code": "02"
+  }
+]

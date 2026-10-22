@@ -1,0 +1,121 @@
+[
+  {
+    "name": "add_success",
+    "desc": "新增税种成功",
+    "api": "add",
+    "payload": {
+      "taxTypeName": "${unique_tax_name}",
+      "fixedDisplay": 0
+    },
+    "expect_success": true
+  },
+  {
+    "name": "add_missing_name",
+    "desc": "新增税种缺少税种名称",
+    "api": "add",
+    "payload": {
+      "fixedDisplay": 0
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "add_missing_fixed_display",
+    "desc": "新增税种缺少固定展示标识",
+    "api": "add",
+    "payload": {
+      "taxTypeName": "${unique_tax_name}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "page_normal",
+    "desc": "分页查询税种成功",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_name",
+    "desc": "按税种名称模糊查询",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "taxTypeName": "自动化税种"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_time_range",
+    "desc": "按创建时间区间查询税种",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "createTimeStart": "2020-01-01",
+      "createTimeEnd": "2030-01-01"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "edit_success",
+    "desc": "编辑税种成功",
+    "api": "edit",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "taxTypeName": "${entity_name}改",
+      "fixedDisplay": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "edit_missing_id",
+    "desc": "编辑税种缺少ID",
+    "api": "edit",
+    "payload": {
+      "taxTypeName": "${unique_tax_name}",
+      "fixedDisplay": 0
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "status_disable",
+    "desc": "禁用税种成功",
+    "api": "status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "status": 0
+    },
+    "expect_success": true
+  },
+  {
+    "name": "status_enable",
+    "desc": "启用税种成功",
+    "api": "status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "status": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "status_missing_status",
+    "desc": "修改税种状态缺少状态值",
+    "api": "status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "name": "page_normal",
+    "desc": "分页查询超级个体档案成功",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_user_name",
+    "desc": "按姓名查询超级个体档案",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "userName": "Test"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_provider_name",
+    "desc": "按服务商查询超级个体档案",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "providerName": "服务"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_success",
+    "desc": "查询超级个体档案详情成功",
+    "api": "detail",
+    "method": "GET",
+    "need_worker": true,
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "detail_unknown_worker",
+    "desc": "查询不存在的超级个体档案详情",
+    "api": "detail",
+    "method": "GET",
+    "payload": {
+      "worker_user_no": "NON_EXISTENT_999"
+    },
+    "expect_success": false,
+    "expect_code": "01000028"
+  },
+  {
+    "name": "contracts_success",
+    "desc": "查询超级个体合同列表成功",
+    "api": "contracts",
+    "method": "GET",
+    "need_worker": true,
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "assignment_records_success",
+    "desc": "查询超级个体历史分配记录成功",
+    "api": "assignment_records",
+    "method": "GET",
+    "need_worker": true,
+    "payload": {},
+    "expect_success": true
+  }
+]

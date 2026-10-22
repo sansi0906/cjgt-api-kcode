@@ -1,0 +1,16 @@
+[
+  {
+    "name": "unsupported_send_type",
+    "desc": "open-api 不支持的请求类型",
+    "api": "post",
+    "payload": {
+      "dateTime": "2026-01-01 00:00:00",
+      "sendType": "test",
+      "hashkey": "k",
+      "sign": "s",
+      "dataEncrypt": "e"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  }
+]

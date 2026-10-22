@@ -1,0 +1,124 @@
+[
+  {
+    "name": "page_normal",
+    "desc": "分页查询工单成功",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_customer_name",
+    "desc": "按客户名称查询工单",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "customerName": "张"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_status",
+    "desc": "按状态查询工单",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "status": 3
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_success",
+    "desc": "查询工单详情成功",
+    "api": "detail",
+    "method": "GET",
+    "need_order": true,
+    "payload": {
+      "workOrderId": "${work_order_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_unknown_id",
+    "desc": "查询不存在的工单详情",
+    "api": "detail",
+    "method": "GET",
+    "payload": {
+      "workOrderId": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000028"
+  },
+  {
+    "name": "assignments_success",
+    "desc": "查询工单分配记录成功",
+    "api": "assignments",
+    "method": "GET",
+    "need_order": true,
+    "payload": {
+      "workOrderId": "${work_order_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "assign_missing_provider_id",
+    "desc": "分配服务商缺少服务商ID",
+    "api": "assign",
+    "payload": {
+      "workOrderId": "${work_order_id}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "assign_unknown_work_order",
+    "desc": "为不存在的工单分配服务商",
+    "api": "assign",
+    "payload": {
+      "workOrderId": 99999999,
+      "providerId": 2225
+    },
+    "expect_success": false,
+    "expect_code": "01000028"
+  },
+  {
+    "name": "assign_status_not_allowed",
+    "desc": "工单状态不允许分配服务商",
+    "api": "assign",
+    "need_order": true,
+    "payload": {
+      "workOrderId": "${work_order_id}",
+      "providerId": 2225
+    },
+    "expect_success": false,
+    "expect_code": "E0100099"
+  },
+  {
+    "name": "assign_station_missing_name",
+    "desc": "分配驿站缺少驿站名称",
+    "api": "assign_station",
+    "payload": {
+      "workOrderId": "${work_order_id}",
+      "stationInfoId": 1
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "assign_station_status_not_allowed",
+    "desc": "工单状态不允许分配驿站",
+    "api": "assign_station",
+    "need_order": true,
+    "payload": {
+      "workOrderId": "${work_order_id}",
+      "stationInfoId": 1,
+      "stationInfoName": "自动化驿站"
+    },
+    "expect_success": false,
+    "expect_code": "01000002"
+  }
+]

@@ -1,0 +1,131 @@
+[
+  {
+    "name": "paging_normal",
+    "desc": "分页查询菜单成功",
+    "api": "paging",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "paging_filter_by_menu_name",
+    "desc": "按菜单名称查询",
+    "api": "paging",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "menuName": "自动化菜单"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "menu_tree_select",
+    "desc": "菜单下拉树查询成功",
+    "api": "menu_tree_sel",
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "menu_tree_select_all",
+    "desc": "菜单全量下拉树查询成功",
+    "api": "menu_tree_sel_all",
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "add_success",
+    "desc": "新增菜单成功",
+    "api": "add",
+    "payload": {
+      "menuName": "${unique_menu_name}",
+      "menuType": "C",
+      "parentId": 0,
+      "webType": 0
+    },
+    "expect_success": true
+  },
+  {
+    "name": "add_missing_menu_name",
+    "desc": "新增菜单缺少菜单名称",
+    "api": "add",
+    "payload": {
+      "menuType": "C",
+      "parentId": 0
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "get_success",
+    "desc": "查询菜单详情成功",
+    "api": "get",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "get_unknown_id",
+    "desc": "查询不存在的菜单详情",
+    "api": "get",
+    "payload": {
+      "id": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000025"
+  },
+  {
+    "name": "get_missing_id",
+    "desc": "查询菜单详情缺少ID",
+    "api": "get",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "edit_success",
+    "desc": "编辑菜单成功",
+    "api": "edit",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "menuName": "${entity_name}改",
+      "menuType": "C",
+      "parentId": 0
+    },
+    "expect_success": true
+  },
+  {
+    "name": "edit_missing_id",
+    "desc": "编辑菜单缺少ID",
+    "api": "edit",
+    "payload": {
+      "menuName": "${unique_menu_name}",
+      "menuType": "C",
+      "parentId": 0
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "delete_success",
+    "desc": "删除菜单成功",
+    "api": "delete",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "delete_missing_id",
+    "desc": "删除菜单缺少ID",
+    "api": "delete",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  }
+]

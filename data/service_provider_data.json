@@ -1,0 +1,634 @@
+[
+  {
+    "name": "save_success",
+    "desc": "新增服务商成功",
+    "api": "save",
+    "payload": {
+      "companyName": "${unique_company_name}",
+      "unifiedSocialCode": "${unique_uscc}",
+      "officeAddress": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "officeAddressDetail": "自动化办公地址",
+      "serviceArea": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "contactPerson": "自动化联系人",
+      "contactPhone": "${unique_phone}",
+      "serviceItems": [
+        1
+      ]
+    },
+    "expect_success": true
+  },
+  {
+    "name": "save_duplicate_phone",
+    "desc": "同一联系电话重复新增服务商",
+    "api": "save",
+    "need_entity": true,
+    "payload": {
+      "companyName": "${unique_company_name}",
+      "unifiedSocialCode": "${unique_uscc}",
+      "officeAddress": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "officeAddressDetail": "自动化办公地址",
+      "serviceArea": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "contactPerson": "自动化联系人",
+      "contactPhone": "${entity_phone}",
+      "serviceItems": [
+        1
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "E0100099"
+  },
+  {
+    "name": "save_missing_company_name",
+    "desc": "新增服务商缺少公司名称",
+    "api": "save",
+    "payload": {
+      "unifiedSocialCode": "${unique_uscc}",
+      "officeAddress": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "officeAddressDetail": "地址",
+      "serviceArea": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "contactPerson": "联系人",
+      "contactPhone": "${unique_phone}",
+      "serviceItems": [
+        1
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_contact_person",
+    "desc": "新增服务商缺少联系人",
+    "api": "save",
+    "payload": {
+      "companyName": "${unique_company_name}",
+      "unifiedSocialCode": "${unique_uscc}",
+      "officeAddress": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "officeAddressDetail": "地址",
+      "serviceArea": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "contactPhone": "${unique_phone}",
+      "serviceItems": [
+        1
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_contact_phone",
+    "desc": "新增服务商缺少联系电话",
+    "api": "save",
+    "payload": {
+      "companyName": "${unique_company_name}",
+      "unifiedSocialCode": "${unique_uscc}",
+      "officeAddress": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "officeAddressDetail": "地址",
+      "serviceArea": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "contactPerson": "联系人",
+      "serviceItems": [
+        1
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_office_address",
+    "desc": "新增服务商缺少办公地址",
+    "api": "save",
+    "payload": {
+      "companyName": "${unique_company_name}",
+      "unifiedSocialCode": "${unique_uscc}",
+      "officeAddressDetail": "地址",
+      "serviceArea": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "contactPerson": "联系人",
+      "contactPhone": "${unique_phone}",
+      "serviceItems": [
+        1
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_service_area",
+    "desc": "新增服务商缺少服务区域",
+    "api": "save",
+    "payload": {
+      "companyName": "${unique_company_name}",
+      "unifiedSocialCode": "${unique_uscc}",
+      "officeAddress": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "officeAddressDetail": "地址",
+      "contactPerson": "联系人",
+      "contactPhone": "${unique_phone}",
+      "serviceItems": [
+        1
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_service_items",
+    "desc": "新增服务商缺少服务项目",
+    "api": "save",
+    "payload": {
+      "companyName": "${unique_company_name}",
+      "unifiedSocialCode": "${unique_uscc}",
+      "officeAddress": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "officeAddressDetail": "地址",
+      "serviceArea": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "contactPerson": "联系人",
+      "contactPhone": "${unique_phone}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_uscc",
+    "desc": "新增服务商缺少统一社会信用代码",
+    "api": "save",
+    "payload": {
+      "companyName": "${unique_company_name}",
+      "officeAddress": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "officeAddressDetail": "地址",
+      "serviceArea": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "contactPerson": "联系人",
+      "contactPhone": "${unique_phone}",
+      "serviceItems": [
+        1
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "page_normal",
+    "desc": "分页查询服务商成功",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_company_name",
+    "desc": "按公司名称查询服务商",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "companyName": "自动化服务商"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "page_filter_by_status",
+    "desc": "按状态查询服务商",
+    "api": "page",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "status": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_success",
+    "desc": "查询服务商详情成功",
+    "api": "detail",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_unknown_id",
+    "desc": "查询不存在的服务商详情",
+    "api": "detail",
+    "payload": {
+      "id": 99999999
+    },
+    "expect_success": false,
+    "expect_code": "01000009"
+  },
+  {
+    "name": "detail_missing_id",
+    "desc": "查询服务商详情缺少ID",
+    "api": "detail",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "edit_success",
+    "desc": "编辑服务商成功",
+    "api": "edit",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "companyName": "${entity_name}改",
+      "unifiedSocialCode": "${entity_uscc}",
+      "officeAddress": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "officeAddressDetail": "新办公地址",
+      "serviceArea": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "contactPerson": "新联系人",
+      "contactPhone": "${entity_phone}",
+      "serviceItems": [
+        1
+      ]
+    },
+    "expect_success": true
+  },
+  {
+    "name": "edit_missing_id",
+    "desc": "编辑服务商缺少ID",
+    "api": "edit",
+    "payload": {
+      "companyName": "${unique_company_name}",
+      "unifiedSocialCode": "${unique_uscc}",
+      "officeAddress": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "officeAddressDetail": "地址",
+      "serviceArea": [
+        {
+          "code": "120000000000",
+          "name": "天津市",
+          "level": "province"
+        },
+        {
+          "code": "120100000000",
+          "name": "天津市",
+          "level": "city"
+        },
+        {
+          "code": "120113000000",
+          "name": "东丽区",
+          "level": "county"
+        }
+      ],
+      "contactPerson": "联系人",
+      "contactPhone": "${unique_phone}",
+      "serviceItems": [
+        1
+      ]
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "change_status_disable",
+    "desc": "禁用服务商成功",
+    "api": "change_status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "status": 0
+    },
+    "expect_success": true
+  },
+  {
+    "name": "change_status_enable",
+    "desc": "启用服务商成功",
+    "api": "change_status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}",
+      "status": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "change_status_missing_status",
+    "desc": "修改服务商状态缺少状态值",
+    "api": "change_status",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "delete_success",
+    "desc": "删除服务商成功",
+    "api": "delete",
+    "need_entity": true,
+    "payload": {
+      "id": "${entity_id}"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "delete_missing_id",
+    "desc": "删除服务商缺少ID",
+    "api": "delete",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  }
+]

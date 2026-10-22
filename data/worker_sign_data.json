@@ -1,0 +1,81 @@
+[
+  {
+    "name": "worker_info_by_phone",
+    "desc": "按手机号查询工人信息",
+    "api": "worker_info",
+    "payload": {
+      "phone": "15810299672"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "worker_info_by_user_uuid",
+    "desc": "按用户UUID查询工人信息",
+    "api": "worker_info",
+    "payload": {
+      "userUuid": "100000134"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "worker_info_missing_param",
+    "desc": "查询工人信息缺少参数",
+    "api": "worker_info",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000002"
+  },
+  {
+    "name": "worker_authorization",
+    "desc": "工人信息授权查询",
+    "api": "worker_authorization",
+    "payload": {
+      "userUuid": "100000134"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "station_list",
+    "desc": "查询驿站列表成功",
+    "api": "station_list",
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "save_missing_station_info_id",
+    "desc": "入驻缺少驿站ID",
+    "api": "save",
+    "payload": {
+      "userUuid": "100000134",
+      "workerPhone": "15810299672",
+      "provinceAreaCode": "120000",
+      "cityAreaCode": "120100",
+      "serviceItems": [],
+      "sourceType": 1,
+      "stationInfoName": "自动化驿站"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "save_missing_service_item_price",
+    "desc": "入驻服务项目缺少价格",
+    "api": "save",
+    "payload": {
+      "userUuid": "100000134",
+      "workerPhone": "15810299672",
+      "provinceAreaCode": "120000",
+      "cityAreaCode": "120100",
+      "serviceItems": [
+        {
+          "serviceItemId": 1
+        }
+      ],
+      "sourceType": 1,
+      "stationInfoId": 1,
+      "stationInfoName": "自动化驿站"
+    },
+    "expect_success": false,
+    "expect_code": "01000002"
+  }
+]
