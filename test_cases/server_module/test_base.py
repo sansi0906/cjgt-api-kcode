@@ -1,20 +1,38 @@
 """
 test_base.py - 服务商端测试基类
 =================================
-所有服务商端 (/server/*) 模块测试类的基类，提供客户端初始化、服务商登录、
-断言、数据库记录等通用功能。
+所有服务商端 (/server/*) 模块测试类的基类，继承 DataDrivenApiTestBase，
+复用数据驱动分派、占位符替换、断言和清理能力。
 """
 
 import pytest
 
 from api_clients.provider_client import ProviderClient
-from utils.base_test import BaseTest
+from utils.module_base import DataDrivenApiTestBase
 
 
-class ProviderTestBase(BaseTest):
+class ProviderTestBase(DataDrivenApiTestBase):
     _module_name = "server_module"
     _module_desc = "服务商端模块"
     _skip_auto_login = False
+
+    api_paths = {
+        "home": "/server/home",
+        "customer_page": "/server/customer/page",
+        "customer_detail": "/server/customer/detail",
+        "customer_declare_config": "/server/customer/declare/config",
+        "customer_declare_config_save": "/server/customer/declare/config/save",
+        "customer_declare_cycles": "/server/customer/declare/cycles",
+        "customer_declare_tax_types": "/server/customer/declare/taxTypes",
+        "customer_license_detail": "/server/customer/license/detail",
+        "customer_license_upload": "/server/customer/license/upload",
+        "knowledge_consult_page": "/server/knowledge/consult/page",
+        "knowledge_consult_detail": "/server/knowledge/consult/detail",
+        "work_order_page": "/server/workOrder/page",
+        "work_order_detail": "/server/workOrder/detail",
+        "work_order_accept": "/server/workOrder/accept",
+        "work_order_reject": "/server/workOrder/reject",
+    }
 
     @pytest.fixture(autouse=True)
     def setup(self, config, execution_id, db_helper, pg_cleanup, request):
