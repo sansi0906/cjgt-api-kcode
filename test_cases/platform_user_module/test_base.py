@@ -4,11 +4,9 @@ test_base.py - 平台用户管理测试基类
 提供平台用户管理模块的通用造数、清理与断言辅助方法
 """
 
-import uuid
-
 import pytest
 from utils.base_test import BaseTest
-from utils.factories import UserFactory
+from utils.factories import UserFactory, UniqueValueFactory
 
 
 class TestBase(BaseTest):
@@ -18,7 +16,7 @@ class TestBase(BaseTest):
     @staticmethod
     def _unique_phone(prefix="176"):
         """生成唯一测试手机号"""
-        return prefix + str(uuid.uuid4().int % 10**8).zfill(8)
+        return UniqueValueFactory.unique_phone(prefix)
 
     def _create_user(self, phone=None, real_name="自动化测试用户", sex=1, role_group_id=5, status=1):
         """通过接口创建平台用户，返回 (user_id, phone)"""

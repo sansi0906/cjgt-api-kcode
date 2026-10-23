@@ -4,10 +4,9 @@ test_base.py - 角色管理测试基类
 提供角色管理模块的通用造数、清理与断言辅助方法
 """
 
-import uuid
-
 import pytest
 from utils.base_test import BaseTest
+from utils.factories import UniqueValueFactory
 
 
 class TestBase(BaseTest):
@@ -17,13 +16,13 @@ class TestBase(BaseTest):
     @staticmethod
     def _unique(prefix="AUTO", length=6):
         """生成唯一标识"""
-        return prefix + str(uuid.uuid4().int % (10 ** length)).zfill(length)
+        return UniqueValueFactory.unique_id(prefix, length)
 
     def _unique_role_name(self):
-        return "自动化角色" + str(uuid.uuid4().int % 10**6).zfill(6)
+        return UniqueValueFactory.unique_role_name()
 
     def _unique_role_no(self):
-        return self._unique("AUTO", 8)
+        return UniqueValueFactory.unique_role_no()
 
     def _create_role(self, role_name=None, role_no=None, status=1, role_remark="自动化创建"):
         """创建角色，返回 (role_id, role_name, role_no)"""

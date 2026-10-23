@@ -2,9 +2,8 @@
 test_base.py - 税种配置管理测试基类
 """
 
-import uuid
-
 from utils.module_base import DataDrivenApiTestBase
+from utils.factories import UniqueValueFactory
 
 
 class TestBase(DataDrivenApiTestBase):
@@ -22,7 +21,7 @@ class TestBase(DataDrivenApiTestBase):
 
     @staticmethod
     def _unique_tax_name():
-        return "自动化税种" + str(uuid.uuid4().int % 10**6).zfill(6)
+        return UniqueValueFactory.unique_tax_name()
 
     def _create_tax(self, name=None):
         """新增税种，返回 (id, name)"""

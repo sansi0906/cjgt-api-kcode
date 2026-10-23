@@ -2,9 +2,8 @@
 test_base.py - 合同服务配置管理测试基类
 """
 
-import uuid
-
 from utils.module_base import DataDrivenApiTestBase
+from utils.factories import UniqueValueFactory
 
 
 class TestBase(DataDrivenApiTestBase):
@@ -24,13 +23,14 @@ class TestBase(DataDrivenApiTestBase):
 
     @staticmethod
     def _unique_title():
-        return "合同服务" + str(uuid.uuid4().int % 10**6).zfill(6)
+        return UniqueValueFactory.unique_title("合同服务")
 
     def _create_service_item(self):
         """新建服务项目（业务约束：一个服务项目仅允许一条合同服务配置）"""
-        item_name = "合同项" + str(uuid.uuid4().int % 10**6).zfill(6)
+        item_name = UniqueValueFactory.unique_name("合同项")
+        item_code = UniqueValueFactory.unique_item_code()
         response = self.client.post("/platform/serviceItem/add", json={
-            "itemName": item_name, "billingMethod": 1, "itemCode": "AUTO" + str(uuid.uuid4().int % 10**8).zfill(8),
+            "itemName": item_name, "billingMethod": 1, "itemCode": item_code,
         })
         self.validator.assert_status_code(response, 200)
         self.assert_api_success(response.json())

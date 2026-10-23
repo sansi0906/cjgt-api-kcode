@@ -2,10 +2,8 @@
 test_base.py - 经营范围配置管理测试基类
 """
 
-import uuid
-
 from utils.module_base import DataDrivenApiTestBase
-from utils.factories import BusinessScopeFactory
+from utils.factories import BusinessScopeFactory, UniqueValueFactory
 
 
 class TestBase(DataDrivenApiTestBase):
@@ -24,7 +22,7 @@ class TestBase(DataDrivenApiTestBase):
 
     @staticmethod
     def _unique_scope_name():
-        return "自动化范围" + str(uuid.uuid4().int % 10**6).zfill(6)
+        return UniqueValueFactory.unique_scope_name()
 
     def _create_scope(self, name=None):
         name = name or self._unique_scope_name()

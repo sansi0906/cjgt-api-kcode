@@ -2,9 +2,8 @@
 test_base.py - 菜单管理测试基类
 """
 
-import uuid
-
 from utils.module_base import DataDrivenApiTestBase
+from utils.factories import UniqueValueFactory
 
 
 class TestBase(DataDrivenApiTestBase):
@@ -25,7 +24,7 @@ class TestBase(DataDrivenApiTestBase):
 
     @staticmethod
     def _unique_menu_name():
-        return "自动化菜单" + str(uuid.uuid4().int % 10**6).zfill(6)
+        return UniqueValueFactory.unique_menu_name()
 
     def _create_menu(self, name=None):
         name = name or self._unique_menu_name()

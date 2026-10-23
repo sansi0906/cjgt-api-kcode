@@ -4,11 +4,9 @@ test_base.py - 服务项目配置测试基类
 提供服务项目配置模块的通用造数、清理与断言辅助方法
 """
 
-import uuid
-
 import pytest
 from utils.base_test import BaseTest
-from utils.factories import ServiceItemFactory
+from utils.factories import ServiceItemFactory, UniqueValueFactory
 
 
 class TestBase(BaseTest):
@@ -18,11 +16,11 @@ class TestBase(BaseTest):
     @staticmethod
     def _unique_item_name():
         """生成唯一服务项目名称（后端限制最多 10 个字）"""
-        return "自动化" + str(uuid.uuid4().int % 10**6).zfill(6)
+        return UniqueValueFactory.unique_item_name()
 
     @staticmethod
     def _unique_item_code():
-        return "AUTO" + str(uuid.uuid4().int % 10**8).zfill(8)
+        return UniqueValueFactory.unique_item_code()
 
     def _create_item(self, item_name=None, billing_method=1, item_code=None):
         """创建服务项目，返回 (item_id, item_name)"""

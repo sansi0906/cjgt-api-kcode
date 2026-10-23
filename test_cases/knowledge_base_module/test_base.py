@@ -2,10 +2,8 @@
 test_base.py - 知识库管理测试基类
 """
 
-import uuid
-
 from utils.module_base import DataDrivenApiTestBase
-from utils.factories import KnowledgeBaseFactory
+from utils.factories import KnowledgeBaseFactory, UniqueValueFactory
 
 
 class TestBase(DataDrivenApiTestBase):
@@ -25,7 +23,7 @@ class TestBase(DataDrivenApiTestBase):
 
     @staticmethod
     def _unique_title():
-        return "自动化知识" + str(uuid.uuid4().int % 10**6).zfill(6)
+        return UniqueValueFactory.unique_title()
 
     def _create_knowledge(self, title=None):
         title = title or self._unique_title()

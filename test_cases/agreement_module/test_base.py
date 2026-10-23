@@ -2,9 +2,8 @@
 test_base.py - 用户协议管理测试基类
 """
 
-import uuid
-
 from utils.module_base import DataDrivenApiTestBase
+from utils.factories import UniqueValueFactory
 
 
 class TestBase(DataDrivenApiTestBase):
@@ -22,7 +21,7 @@ class TestBase(DataDrivenApiTestBase):
 
     @staticmethod
     def _unique_agreement_name():
-        return "自动化协议" + str(uuid.uuid4().int % 10**6).zfill(6)
+        return UniqueValueFactory.unique_agreement_name()
 
     def _backup_agreement(self, agreement_type):
         """备份并物理移除某类型协议（业务约束：每种类型仅允许一条）"""

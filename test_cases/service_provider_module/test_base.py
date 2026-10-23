@@ -2,10 +2,8 @@
 test_base.py - 服务商管理测试基类
 """
 
-import uuid
-
 from utils.module_base import DataDrivenApiTestBase
-from utils.factories import ServiceProviderFactory
+from utils.factories import ServiceProviderFactory, UniqueValueFactory
 
 
 class TestBase(DataDrivenApiTestBase):
@@ -31,15 +29,15 @@ class TestBase(DataDrivenApiTestBase):
     @staticmethod
     def _unique_phone():
         """11 位手机号（后端对联系电话做数值校验，长度非法会报 01000044）"""
-        return "176" + str(uuid.uuid4().int % 10**8).zfill(8)
+        return UniqueValueFactory.unique_phone()
 
     @staticmethod
     def _unique_company_name():
-        return "自动化服务商" + str(uuid.uuid4().int % 10**4).zfill(4)
+        return UniqueValueFactory.unique_company_name()
 
     @staticmethod
     def _unique_uscc():
-        return "911" + str(uuid.uuid4().int % 10**15).zfill(15)
+        return UniqueValueFactory.unique_uscc()
 
     def _create_provider(self):
         """新增服务商，返回 (id, phone, company_name, uscc)"""
