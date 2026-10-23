@@ -5,6 +5,7 @@ test_base.py - 经营范围配置管理测试基类
 import uuid
 
 from utils.module_base import DataDrivenApiTestBase
+from utils.factories import BusinessScopeFactory
 
 
 class TestBase(DataDrivenApiTestBase):
@@ -27,7 +28,8 @@ class TestBase(DataDrivenApiTestBase):
 
     def _create_scope(self, name=None):
         name = name or self._unique_scope_name()
-        row_id = self.create_by_api("add", {"scopeName": name, "remark": "自动化备注"},
+        params = BusinessScopeFactory.build_add_params(scopeName=name, remark="自动化备注")
+        row_id = self.create_by_api("add", params,
                                     self.TABLE, "scope_name", name)
         return row_id, name
 

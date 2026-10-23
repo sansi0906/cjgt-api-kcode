@@ -66,10 +66,15 @@ class BusinessScopeFactory:
     @staticmethod
     def build_add_payload(**overrides):
         """构建新增经营范围请求体"""
-        payload = BusinessScopeFactory.build(**overrides)
-        payload.pop("id", None)
-        payload.pop("isEnabled", None)
+        scope_name = overrides.pop("scopeName", None) or overrides.pop("scope_name", None)
+        remark = overrides.pop("remark", None)
+        payload = BusinessScopeFactory.build(scope_name=scope_name, remark=remark)
         return payload
+
+    @staticmethod
+    def build_add_params(**overrides):
+        """构建新增经营范围请求参数（驼峰键，可直接用于 create_by_api）"""
+        return BusinessScopeFactory.build_add_payload(**overrides)
 
     @staticmethod
     def build_edit_payload(scope_id, **overrides):
@@ -107,8 +112,16 @@ class KnowledgeBaseFactory:
 
     @staticmethod
     def build_save_payload(**overrides):
-        """构建保存知识库请求体（不含 id）"""
-        payload = KnowledgeBaseFactory.build(**overrides)
+        """构建保存知识库请求体（不含 id），支持驼峰键别名"""
+        camel_to_snake = {
+            "consultType": "consult_type",
+            "displayPosition": "display_position",
+            "applicableArea": "applicable_area",
+        }
+        mapped = {}
+        for k, v in overrides.items():
+            mapped[camel_to_snake.get(k, k)] = v
+        payload = KnowledgeBaseFactory.build(**mapped)
         payload.pop("id", None)
         return payload
 
