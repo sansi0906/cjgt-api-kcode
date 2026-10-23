@@ -350,6 +350,6 @@ class BaseTest:
                 item_id = record.get(id_key)
                 break
         assert item_id, f"Item not found after creation: {page_data}"
-        self._created_ids.append(item_id)
+        self.register_cleanup(self._delete_test_data, item_id)
         self._log_test_data_created(item_id, match_value)
         return item_id, match_value
