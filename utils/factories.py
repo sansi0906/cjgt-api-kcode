@@ -6,6 +6,7 @@ factories.py - 统一测试数据工厂
 
 import time
 import random
+import uuid
 
 
 class UserFactory:
@@ -322,3 +323,67 @@ class PricingFactory:
             "areaList": area_list or [{"code": "110101000000", "level": "county", "name": "东城区"}],
             "effectiveTime": effective_time,
         }
+
+
+class UniqueValueFactory:
+    """唯一值生成工厂：统一各模块的 _unique_* 造数方法"""
+
+    @staticmethod
+    def unique_id(prefix="", length=6):
+        """生成带前缀的唯一ID：前缀 + length位数字"""
+        return prefix + str(uuid.uuid4().int % 10**length).zfill(length)
+
+    @staticmethod
+    def unique_phone(prefix="176"):
+        """生成11位手机号"""
+        return prefix + str(uuid.uuid4().int % 10**8).zfill(8)
+
+    @staticmethod
+    def unique_name(prefix="自动化", length=6):
+        """生成带前缀的唯一名称"""
+        return prefix + str(uuid.uuid4().int % 10**length).zfill(length)
+
+    @staticmethod
+    def unique_scope_name(prefix="自动化范围"):
+        return UniqueValueFactory.unique_name(prefix)
+
+    @staticmethod
+    def unique_item_name(prefix="自动化"):
+        return UniqueValueFactory.unique_name(prefix)
+
+    @staticmethod
+    def unique_item_code(prefix="AUTO"):
+        return prefix + str(uuid.uuid4().int % 10**8).zfill(8)
+
+    @staticmethod
+    def unique_agreement_name(prefix="自动化协议"):
+        return UniqueValueFactory.unique_name(prefix)
+
+    @staticmethod
+    def unique_tax_name(prefix="自动化税种"):
+        return UniqueValueFactory.unique_name(prefix)
+
+    @staticmethod
+    def unique_menu_name(prefix="自动化菜单"):
+        return UniqueValueFactory.unique_name(prefix)
+
+    @staticmethod
+    def unique_role_name(prefix="自动化角色"):
+        return UniqueValueFactory.unique_name(prefix)
+
+    @staticmethod
+    def unique_role_no(prefix="AUTO"):
+        return prefix + str(uuid.uuid4().int % 10**8).zfill(8)
+
+    @staticmethod
+    def unique_company_name(prefix="自动化服务商"):
+        return UniqueValueFactory.unique_name(prefix, length=4)
+
+    @staticmethod
+    def unique_uscc():
+        return "911" + str(uuid.uuid4().int % 10**15).zfill(15)
+
+    @staticmethod
+    def unique_title(prefix="自动化知识"):
+        return UniqueValueFactory.unique_name(prefix)
+
