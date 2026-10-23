@@ -206,9 +206,26 @@ class ServiceProviderFactory:
 
     @staticmethod
     def build_save_payload(**overrides):
-        """构建保存服务商请求体（不含 id）"""
-        payload = ServiceProviderFactory.build(**overrides)
+        """构建保存服务商请求体（不含 id），支持驼峰键别名映射"""
+        camel_to_snake = {
+            "companyName": "company_name",
+            "unifiedSocialCode": "unified_social_code",
+            "officeAddress": "office_address",
+            "serviceArea": "service_area",
+            "contactPerson": "contact_person",
+            "contactPhone": "contact_phone",
+            "serviceItems": "service_items",
+        }
+        build_kwargs = {}
+        extra = {}
+        for k, v in overrides.items():
+            if k in camel_to_snake:
+                build_kwargs[camel_to_snake[k]] = v
+            else:
+                extra[k] = v
+        payload = ServiceProviderFactory.build(**build_kwargs)
         payload.pop("id", None)
+        payload.update(extra)
         return payload
 
     @staticmethod

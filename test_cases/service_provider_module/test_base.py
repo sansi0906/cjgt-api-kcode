@@ -5,6 +5,7 @@ test_base.py - 服务商管理测试基类
 import uuid
 
 from utils.module_base import DataDrivenApiTestBase
+from utils.factories import ServiceProviderFactory
 
 
 class TestBase(DataDrivenApiTestBase):
@@ -45,16 +46,18 @@ class TestBase(DataDrivenApiTestBase):
         phone = self._unique_phone()
         company_name = self._unique_company_name()
         uscc = self._unique_uscc()
-        row_id = self.create_by_api("save", {
-            "companyName": company_name,
-            "unifiedSocialCode": uscc,
-            "officeAddress": self.OFFICE,
-            "officeAddressDetail": "自动化办公地址",
-            "serviceArea": self.OFFICE,
-            "contactPerson": "自动化联系人",
-            "contactPhone": phone,
-            "serviceItems": [1],
-        }, self.TABLE, "contact_phone", phone)
+        params = ServiceProviderFactory.build_save_payload(
+            companyName=company_name,
+            unifiedSocialCode=uscc,
+            officeAddress=self.OFFICE,
+            officeAddressDetail="自动化办公地址",
+            serviceArea=self.OFFICE,
+            contactPerson="自动化联系人",
+            contactPhone=phone,
+            serviceItems=[1],
+        )
+        row_id = self.create_by_api("save", params,
+                                    self.TABLE, "contact_phone", phone)
         return row_id, phone, company_name, uscc
 
     def _ctx(self):
