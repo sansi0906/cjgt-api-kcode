@@ -8,6 +8,7 @@ import uuid
 
 import pytest
 from utils.base_test import BaseTest
+from utils.factories import ServiceItemFactory
 
 
 class TestBase(BaseTest):
@@ -27,13 +28,14 @@ class TestBase(BaseTest):
         """创建服务项目，返回 (item_id, item_name)"""
         item_name = item_name or self._unique_item_name()
         item_code = item_code or self._unique_item_code()
-        response = self.client.add_service_item(
+        params = ServiceItemFactory.build_add_params(
             item_name=item_name,
             billing_method=billing_method,
             subtitle="自动化副标题",
             item_desc="自动化介绍",
             item_code=item_code,
         )
+        response = self.client.add_service_item(**params)
         self.validator.assert_status_code(response, 200)
         self.assert_api_success(response.json())
         row = self.fetch_business_row("cjgt_service_item", "item_code = %s", (item_code,))

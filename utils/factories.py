@@ -146,8 +146,21 @@ class ServiceItemFactory:
     def build_edit_payload(item_id, **overrides):
         """构建编辑服务项目请求体"""
         payload = ServiceItemFactory.build(item_id=item_id, **overrides)
-        payload.pop("isDisplay", None)
         return payload
+
+    @staticmethod
+    def build_add_params(**overrides):
+        """构建新增服务项目请求参数（蛇形命名，可直接传给 add_service_item(**params)）"""
+        item_code = overrides.pop("item_code", None)
+        payload = ServiceItemFactory.build(**overrides)
+        return {
+            "item_name": payload.pop("itemName"),
+            "billing_method": payload.pop("billingMethod"),
+            "subtitle": payload.pop("subtitle"),
+            "icon_url": None,
+            "item_desc": payload.pop("itemDesc"),
+            "item_code": item_code,
+        }
 
 
 class ServiceProviderFactory:
