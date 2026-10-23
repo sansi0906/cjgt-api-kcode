@@ -23,7 +23,7 @@ class BaseTest:
     @pytest.fixture(autouse=True)
     def setup(self, config, execution_id, db_helper, pg_cleanup, request):
         """自动初始化客户端、验证器并登录"""
-        self.client = JeecgBootClient(base_url=config["base_url"])
+        self.client = self._create_client(config["base_url"])
         self.validator = ResponseValidator()
         self.config = config
         self.execution_id = execution_id
@@ -144,16 +144,30 @@ class BaseTest:
 
     def login(self, username=None, password=None, login_type=None, web_type=None):
         """执行登录并返回 Token"""
+        default_username, default_password, default_login_type, default_web_type = self._get_login_credentials()
         response = self.client.login(
-            username=username or self.config["username"],
-            password=password or self.config["password"],
-            login_type=login_type if login_type is not None else self.config.get("login_type", 1),
-            web_type=web_type if web_type is not None else self.config.get("web_type", 0),
+            username=username or default_username,
+            password=password or default_password,
+            login_type=login_type if login_type is not None else default_login_type,
+            web_type=web_type if web_type is not None else default_web_type,
         )
         assert response.status_code == 200
         data = response.json()
         assert data.get("code") in ("0", "00"), f"Login failed: {data}"
         return data.get("data", {}).get("token")
+
+    def _create_client(self, base_url):
+        """创建 API 客户端，子类可覆写返回不同客户端类型"""
+        return JeecgBootClient(base_url=base_url)
+
+    def _get_login_credentials(self):
+        """返回默认登录凭证 (username, password, login_type, web_type)，子类可覆写"""
+        return (
+            self.config["username"],
+            self.config["password"],
+            self.config.get("login_type", 1),
+            self.config.get("web_type", 0),
+        )
 
     def assert_login_success(self, data):
         """断言登录成功"""

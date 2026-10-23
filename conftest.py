@@ -29,6 +29,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pytest
 from utils.token_manager import TokenManager
 from api_clients.jeecgboot_client import JeecgBootClient
+from api_clients.provider_client import ProviderClient
 
 
 _test_titles = {}
@@ -128,6 +129,25 @@ def logged_in_client(config, token_manager):
                 token = data.get("data", {}).get("token")
                 token_manager.save_token(token)
     client.set_token(token)
+    yield client
+    client.clear_token()
+
+
+@pytest.fixture(scope="function")
+def provider_client(config):
+    """服务商端客户端固件，自动以服务商身份登录并携带 Token"""
+    client = ProviderClient(base_url=config["base_url"])
+    response = client.login(
+        username=config["provider_username"],
+        password=config["provider_password"],
+        login_type=config.get("login_type", 1),
+        web_type=config.get("provider_web_type", 1),
+    )
+    if response.status_code == 200:
+        data = response.json()
+        if data.get("code") in ("0", "00"):
+            token = data.get("data", {}).get("token")
+            client.set_token(token)
     yield client
     client.clear_token()
 
