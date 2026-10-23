@@ -37,6 +37,20 @@ class UserFactory:
         return payload
 
     @staticmethod
+    def build_edit_params(user_id, **overrides):
+        """构建编辑用户请求参数（蛇形命名，可直接传给 edit_user(**params)）"""
+        payload = UserFactory.build_edit_payload(user_id, **overrides)
+        payload.pop("id", None)
+        return {
+            "user_id": user_id,
+            "user_name": payload.pop("userName"),
+            "real_name": payload.pop("realName"),
+            "sex": payload.pop("sex"),
+            "role_group_id": payload.pop("roleGroupId"),
+            "status": payload.pop("status"),
+        }
+
+    @staticmethod
     def build_save_params(**overrides):
         """构建保存用户请求参数（蛇形命名，可直接传给 save_platform_user(**params)）"""
         payload = UserFactory.build(**overrides)
@@ -82,6 +96,16 @@ class BusinessScopeFactory:
         payload = BusinessScopeFactory.build(scope_id=scope_id, **overrides)
         payload.pop("isEnabled", None)
         return payload
+
+    @staticmethod
+    def build_edit_params(scope_id, **overrides):
+        """构建编辑经营范围请求参数（可直接传给 edit_business_scope(**params)）"""
+        payload = BusinessScopeFactory.build_edit_payload(scope_id, **overrides)
+        return {
+            "scope_id": scope_id,
+            "scope_name": payload.pop("scopeName"),
+            "remark": payload.pop("remark"),
+        }
 
 
 class KnowledgeBaseFactory:
@@ -131,6 +155,20 @@ class KnowledgeBaseFactory:
         payload = KnowledgeBaseFactory.build(knowledge_id=knowledge_id, **overrides)
         return payload
 
+    @staticmethod
+    def build_edit_params(knowledge_id, **overrides):
+        """构建编辑知识库请求参数（蛇形命名，可直接传给 edit_knowledge(**params)）"""
+        payload = KnowledgeBaseFactory.build_edit_payload(knowledge_id, **overrides)
+        payload.pop("id", None)
+        return {
+            "knowledge_id": knowledge_id,
+            "title": payload.pop("title"),
+            "content": payload.pop("content"),
+            "consult_type": payload.pop("consultType"),
+            "display_position": payload.pop("displayPosition"),
+            "applicable_area": payload.pop("applicableArea"),
+        }
+
 
 class ServiceItemFactory:
     """服务项目测试数据工厂"""
@@ -160,6 +198,21 @@ class ServiceItemFactory:
         """构建编辑服务项目请求体"""
         payload = ServiceItemFactory.build(item_id=item_id, **overrides)
         return payload
+
+    @staticmethod
+    def build_edit_params(item_id, **overrides):
+        """构建编辑服务项目请求参数（蛇形命名，可直接传给 edit_service_item(**params)）"""
+        payload = ServiceItemFactory.build_edit_payload(item_id, **overrides)
+        payload.pop("id", None)
+        return {
+            "item_id": item_id,
+            "item_name": payload.pop("itemName"),
+            "billing_method": payload.pop("billingMethod"),
+            "subtitle": payload.pop("subtitle"),
+            "icon_url": None,
+            "item_desc": payload.pop("itemDesc"),
+            "item_code": overrides.get("item_code"),
+        }
 
     @staticmethod
     def build_add_params(**overrides):
