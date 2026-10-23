@@ -9,17 +9,8 @@ from api_clients.base_client import BaseClient
 
 
 class ProviderClient(BaseClient):
-    def login(self, username, password, login_type=1, web_type=1):
-        """服务商密码登录"""
-        return self.post(
-            "/sys/login",
-            json={
-                "username": username,
-                "password": password,
-                "loginType": login_type,
-                "webType": web_type,
-            },
-        )
+    # 服务商端登录 webType 为 1
+    LOGIN_WEB_TYPE = 1
 
     def logout(self):
         """服务商登出"""

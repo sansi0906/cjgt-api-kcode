@@ -10,29 +10,7 @@ from api_clients.base_client import BaseClient
 
 
 class JeecgBootClient(BaseClient):
-    def login(self, username, password, login_type=1, web_type=0):
-        """用户密码登录"""
-        return self.post(
-            "/sys/login",
-            json={
-                "username": username,
-                "password": password,
-                "loginType": login_type,
-                "webType": web_type,
-            },
-        )
-
-#   def login_with_sms(self, username, sms_code, web_type=0):
-#       """短信验证码登录"""
-#       return self.post(
-#           "/sys/login",
-#           json={
-#               "username": username,
-#               "smsCode": sms_code,
-#               "loginType": 0,
-#               "webType": web_type,
-#           },
-#       )
+    # 管理后台登录 webType 为 0（继承自 BaseClient 默认值，此处无需覆写）
 
     def logout(self):
         """用户登出"""

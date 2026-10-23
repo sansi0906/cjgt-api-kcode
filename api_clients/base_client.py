@@ -10,6 +10,9 @@ import requests
 
 
 class BaseClient:
+    # 默认登录 webType：0 表示管理后台，子类如 ProviderClient 可覆写为 1
+    LOGIN_WEB_TYPE = 0
+
     def __init__(self, base_url="", timeout=30):
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
@@ -29,6 +32,29 @@ class BaseClient:
         self.token = token
         if token:
             self.session.headers.update({"token": token})
+
+    def login(self, username, password, login_type=1, web_type=None):
+        """通用密码登录，返回响应对象
+
+        Args:
+            username: 登录账号
+            password: 登录密码
+            login_type: 登录方式，默认 1（密码登录）
+            web_type: 客户端类型，None 时使用 self.LOGIN_WEB_TYPE
+        Returns:
+            requests.Response
+        """
+        if web_type is None:
+            web_type = self.LOGIN_WEB_TYPE
+        return self.post(
+            "/sys/login",
+            json={
+                "username": username,
+                "password": password,
+                "loginType": login_type,
+                "webType": web_type,
+            },
+        )
 
     def clear_token(self):
         """清除请求头中的 token"""
