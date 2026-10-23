@@ -36,6 +36,19 @@ class UserFactory:
         payload = UserFactory.build(user_id=user_id, **overrides)
         return payload
 
+    @staticmethod
+    def build_save_params(**overrides):
+        """构建保存用户请求参数（蛇形命名，可直接传给 save_platform_user(**params)）"""
+        payload = UserFactory.build(**overrides)
+        payload.pop("id", None)
+        return {
+            "user_name": payload.pop("userName"),
+            "real_name": payload.pop("realName"),
+            "sex": payload.pop("sex"),
+            "role_group_id": payload.pop("roleGroupId"),
+            "status": payload.pop("status"),
+        }
+
 
 class BusinessScopeFactory:
     """经营范围测试数据工厂"""

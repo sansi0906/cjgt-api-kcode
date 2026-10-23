@@ -8,6 +8,7 @@ import uuid
 
 import pytest
 from utils.base_test import BaseTest
+from utils.factories import UserFactory
 
 
 class TestBase(BaseTest):
@@ -22,13 +23,14 @@ class TestBase(BaseTest):
     def _create_user(self, phone=None, real_name="自动化测试用户", sex=1, role_group_id=5, status=1):
         """通过接口创建平台用户，返回 (user_id, phone)"""
         phone = phone or self._unique_phone()
-        response = self.client.save_platform_user(
+        params = UserFactory.build_save_params(
             user_name=phone,
             real_name=real_name,
             sex=sex,
             role_group_id=role_group_id,
             status=status,
         )
+        response = self.client.save_platform_user(**params)
         self.validator.assert_status_code(response, 200)
         self.assert_api_success(response.json())
         row = self.fetch_business_row("cjgt_platform_user", "user_name = %s", (phone,))
