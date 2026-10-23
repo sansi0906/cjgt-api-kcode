@@ -1,0 +1,10 @@
+[
+  {
+    "name": "home_success",
+    "desc": "首页数据查询成功",
+    "api": "home",
+    "method": "GET",
+    "payload": {},
+    "expect_success": true
+  }
+]

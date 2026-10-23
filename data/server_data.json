@@ -1,0 +1,201 @@
+[
+  {
+    "name": "home_success",
+    "desc": "服务商首页数据查询成功",
+    "api": "home",
+    "method": "GET",
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "customer_page_normal",
+    "desc": "客户管理分页列表查询成功",
+    "api": "customer_page",
+    "method": "POST",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "customer_page_filter_status",
+    "desc": "客户管理按服务状态分页查询",
+    "api": "customer_page",
+    "method": "POST",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "serviceStatus": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "customer_page_filter_keyword",
+    "desc": "客户管理按关键字分页查询",
+    "api": "customer_page",
+    "method": "POST",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "keyword": "自动化"
+    },
+    "expect_success": true
+  },
+  {
+    "name": "customer_detail_missing_contact_no",
+    "desc": "客户详情缺少联系编号",
+    "api": "customer_detail",
+    "method": "GET",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "customer_declare_cycles_success",
+    "desc": "申报周期下拉列表查询成功",
+    "api": "customer_declare_cycles",
+    "method": "GET",
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "customer_declare_tax_types_success",
+    "desc": "税种下拉列表查询成功",
+    "api": "customer_declare_tax_types",
+    "method": "GET",
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "customer_declare_config_missing_contact_no",
+    "desc": "客户申报配置缺少联系编号",
+    "api": "customer_declare_config",
+    "method": "GET",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "customer_declare_config_save_missing_items",
+    "desc": "保存申报配置缺少申报项目",
+    "api": "customer_declare_config_save",
+    "method": "POST",
+    "payload": {
+      "contactNo": "${contact_no}",
+      "items": []
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "customer_declare_config_save_missing_contact_no",
+    "desc": "保存申报配置缺少联系编号",
+    "api": "customer_declare_config_save",
+    "method": "POST",
+    "payload": {
+      "items": []
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "customer_license_detail_missing_contact_no",
+    "desc": "查看证照缺少联系编号",
+    "api": "customer_license_detail",
+    "method": "GET",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "customer_license_upload_missing_params",
+    "desc": "上传证照缺少联系编号和文件路径",
+    "api": "customer_license_upload",
+    "method": "POST",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "knowledge_consult_page_normal",
+    "desc": "咨询列表分页查询成功",
+    "api": "knowledge_consult_page",
+    "method": "POST",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "knowledge_consult_page_filter_type",
+    "desc": "咨询列表按咨询类型分页查询",
+    "api": "knowledge_consult_page",
+    "method": "POST",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10,
+      "consultType": 1
+    },
+    "expect_success": true
+  },
+  {
+    "name": "knowledge_consult_detail_missing_id",
+    "desc": "咨询详情缺少ID",
+    "api": "knowledge_consult_detail",
+    "method": "GET",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "work_order_page_normal",
+    "desc": "服务进度管理列表分页查询成功",
+    "api": "work_order_page",
+    "method": "POST",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "work_order_detail_missing_id",
+    "desc": "服务进度管理详情缺少工单ID",
+    "api": "work_order_detail",
+    "method": "GET",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "02"
+  },
+  {
+    "name": "work_order_accept_missing_id",
+    "desc": "服务商接单缺少工单ID",
+    "api": "work_order_accept",
+    "method": "POST",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "work_order_reject_missing_params",
+    "desc": "服务商拒绝接单缺少工单ID和拒绝理由",
+    "api": "work_order_reject",
+    "method": "POST",
+    "payload": {},
+    "expect_success": false,
+    "expect_code": "01000006"
+  },
+  {
+    "name": "work_order_reject_missing_reason",
+    "desc": "服务商拒绝接单缺少拒绝理由",
+    "api": "work_order_reject",
+    "method": "POST",
+    "payload": {
+      "workOrderId": "${work_order_id}"
+    },
+    "expect_success": false,
+    "expect_code": "01000006"
+  }
+]

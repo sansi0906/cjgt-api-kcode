@@ -1,0 +1,40 @@
+[
+  {
+    "name": "page_normal",
+    "desc": "工作者档案分页查询成功",
+    "api": "page",
+    "method": "POST",
+    "payload": {
+      "pageNum": 1,
+      "pageSize": 10
+    },
+    "expect_success": true
+  },
+  {
+    "name": "detail_success",
+    "desc": "工作者档案详情查询成功",
+    "api": "detail",
+    "method": "GET",
+    "need_entity": true,
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "assignment_records_success",
+    "desc": "工作者派单记录查询成功",
+    "api": "assignment_records",
+    "method": "GET",
+    "need_entity": true,
+    "payload": {},
+    "expect_success": true
+  },
+  {
+    "name": "contracts_success",
+    "desc": "工作者合同查询成功",
+    "api": "contracts",
+    "method": "GET",
+    "need_entity": true,
+    "payload": {},
+    "expect_success": true
+  }
+]
