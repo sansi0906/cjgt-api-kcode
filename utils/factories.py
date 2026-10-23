@@ -259,3 +259,13 @@ class PricingFactory:
             "serviceItemId": service_item_id,
             "areaList": area_list or [{"code": "110101000000", "level": "county", "name": "东城区"}],
         }
+
+    @staticmethod
+    def build_update_payload(service_item_id=None, pending_amount=None, area_list=None, effective_time=None):
+        """构建更新定价请求体（驼峰键，可直接用于 JSON 发送）"""
+        return {
+            "serviceItemId": service_item_id or 289,
+            "pendingAmount": pending_amount if pending_amount is not None else 888.0,
+            "areaList": area_list or [{"code": "110101000000", "level": "county", "name": "东城区"}],
+            "effectiveTime": effective_time,
+        }

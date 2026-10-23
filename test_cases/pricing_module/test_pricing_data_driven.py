@@ -16,11 +16,23 @@ class TestPricing(TestBase):
         """按数据文件中的参数执行服务定价接口测试"""
         ctx = self._ctx()
         payload_ctx = dict(ctx)
+
+        # 仅对标记 need_pricing 的用例，用 factories 生成的值覆盖 case payload 中已存在的字段
+        # 保留原本缺失的字段（如 missing_service_item_id 不应包含 serviceItemId）
+        case_payload = dict(case.get("payload") or {})
+        if case.get("need_pricing"):
+            factory_payload = ctx.get("pricing_payload", {})
+            for key in list(case_payload.keys()):
+                if key in factory_payload:
+                    case_payload[key] = factory_payload[key]
+        case_with_factory_payload = dict(case)
+        case_with_factory_payload["payload"] = case_payload
+
         row = self._pricing_row()
         original = (row["pending_amount"], row["effective_time"]) if row else (None, None)
 
         try:
-            self.run_case(case, payload_ctx)
+            self.run_case(case_with_factory_payload, payload_ctx)
         finally:
             # 还原待生效金额与生效时间，避免污染业务数据
             if row and original != (row["pending_amount"], row["effective_time"]):

@@ -3,6 +3,7 @@ test_base.py - 服务定价配置管理测试基类
 """
 
 from utils.module_base import DataDrivenApiTestBase
+from utils.factories import PricingFactory
 
 
 class TestBase(DataDrivenApiTestBase):
@@ -42,7 +43,15 @@ class TestBase(DataDrivenApiTestBase):
         )
 
     def _ctx(self):
+        area_path = self._area_path()
+        payload = PricingFactory.build_update_payload(
+            service_item_id=self.SERVICE_ITEM_ID,
+            pending_amount=888.0,
+            area_list=area_path,
+            effective_time="2027-01-01 00:00:00",
+        )
         return {
-            "area_path": self._area_path(),
+            "area_path": area_path,
             "service_item_id": self.SERVICE_ITEM_ID,
+            "pricing_payload": payload,
         }
