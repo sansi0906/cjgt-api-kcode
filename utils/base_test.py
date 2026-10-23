@@ -31,6 +31,7 @@ class BaseTest:
         self.pg_cleanup = pg_cleanup
         self._created_ids = []
         self._business_rows = []
+        self._cleanups = []
         self._module_id = None
         self._test_name = request.node.name
         if not self._skip_auto_login:
@@ -39,6 +40,14 @@ class BaseTest:
 
     def teardown_method(self):
         """清理测试创建的接口数据与自造业务数据"""
+        # 先执行统一清理列表（register_cleanup / register_business_row 新走这条）
+        for cleanup_fn, args, kwargs in getattr(self, "_cleanups", []):
+            try:
+                cleanup_fn(*args, **kwargs)
+            except Exception as e:
+                import logging
+                logging.warning(f"Failed to cleanup {cleanup_fn.__name__}: {e}")
+        # legacy: _business_rows（PostgreSQL 物理删除）
         for table, row_id in getattr(self, "_business_rows", []):
             try:
                 self.delete_business_row(table, row_id)
@@ -46,6 +55,7 @@ class BaseTest:
                 import logging
                 logging.warning(f"Failed to cleanup business row {table}#{row_id}: {e}")
         self._business_rows = []
+        # legacy: _created_ids（MySQL 接口删除）
         for item_id in getattr(self, "_created_ids", []):
             try:
                 self._delete_test_data(item_id)
@@ -84,11 +94,21 @@ class BaseTest:
 
     # ==================== 业务库数据操作（165 PostgreSQL） ====================
 
+    def register_cleanup(self, cleanup_fn, *args, **kwargs):
+        """登记清理回调，teardown 时统一执行。
+        
+        Args:
+            cleanup_fn: 清理函数，如 self.delete_business_row, self._delete_test_data 等
+            *args: 传给清理函数的位置参数
+            **kwargs: 传给清理函数的关键字参数
+        """
+        if not hasattr(self, "_cleanups"):
+            self._cleanups = []
+        self._cleanups.append((cleanup_fn, args, kwargs))
+
     def register_business_row(self, table, row_id):
-        """登记自造的业务数据行，teardown 时自动物理删除"""
-        if not hasattr(self, "_business_rows"):
-            self._business_rows = []
-        self._business_rows.append((table, row_id))
+        """登记自造的业务数据行，teardown 时自动物理删除（统一走 register_cleanup）"""
+        self.register_cleanup(self.delete_business_row, table, row_id)
         return row_id
 
     def insert_business_row(self, table, data, return_id=True):
