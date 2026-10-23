@@ -1,6 +1,0 @@
-﻿from utils.base_test import BaseTest
-
-
-class TestBase(BaseTest):
-    _module_name = "order_module"
-    _module_desc = "平台订单管理模块"

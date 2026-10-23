@@ -1,7 +1,0 @@
-﻿"""test_base.py - 超级个体档案管理测试基类"""
-from utils.base_test import BaseTest
-
-
-class TestBase(BaseTest):
-    _module_name = "super_individual_module"
-    _module_desc = "超级个体档案管理模块"
