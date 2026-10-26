@@ -380,14 +380,23 @@ def pytest_runtest_makereport(item, call):
 
 @pytest.fixture(scope="session")
 def pg_cleanup(config):
-    """PostgreSQL 业务数据清理固件（165 业务数据）"""
+    """PostgreSQL 业务数据清理固件（165 业务数据）。
+
+    支持基于登录账号 UUID 的动态清理：
+    1. 收集 config 中的固定 UUID（pg_cleanup_uuid，兜底）
+    2. 从 165 库动态查询管理员账号 user_uuid（按 username 查询）
+    3. 从 165 库动态查询服务商账号 provider_uuid（按 provider_username 查询）
+    session 结束时统一清理所有收集到的 UUID 对应的业务数据。
+    """
     if not config.get("pg_cleanup_enabled"):
         yield None
         return
-    from utils.pg_cleanup import cleanup_test_data
+    from utils.pg_cleanup import cleanup_test_data, collect_cleanup_uuids
+
     yield cleanup_test_data
     try:
-        cleanup_test_data(creator_uuid=config.get("pg_cleanup_uuid"), dry_run=False)
+        uuids = collect_cleanup_uuids(config)
+        cleanup_test_data(creator_uuids=uuids, dry_run=False)
     except Exception as e:
         import logging
         logging.warning(f"PostgreSQL cleanup failed: {e}")
