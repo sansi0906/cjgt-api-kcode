@@ -236,57 +236,14 @@ class DatabaseHelper:
             return cursor.lastrowid
 
     def cleanup_test_data(self, module_name: str = None, execution_id: str = None):
-        """清理测试数据"""
-        conditions = []
-        params = []
-        if module_name:
-            conditions.append("m.module_name = %s")
-            params.append(module_name)
+        """清理测试数据（已禁用：163 MySQL 仅写入，不删除）
 
-        where_clause = " AND ".join(conditions) if conditions else "1=1"
-
-        with self.get_cursor() as cursor:
-            if execution_id:
-                cursor.execute("DELETE FROM test_logs WHERE execution_id = %s", (execution_id,))
-            else:
-                cursor.execute(f"""
-                    DELETE FROM test_logs
-                    WHERE execution_id IN (
-                        SELECT r.execution_id FROM test_results r
-                        JOIN test_cases c ON r.case_id = c.id
-                        JOIN test_modules m ON c.module_id = m.id
-                        WHERE {where_clause}
-                    )
-                """, tuple(params))
-
-            cursor.execute(f"""
-                DELETE FROM test_results
-                WHERE case_id IN (
-                    SELECT id FROM test_cases
-                    WHERE module_id IN (
-                        SELECT id FROM test_modules
-                        WHERE {where_clause}
-                    )
-                )
-            """, tuple(params))
-
-            cursor.execute(f"""
-                DELETE FROM test_data
-                WHERE module_id IN (
-                    SELECT id FROM test_modules
-                    WHERE {where_clause}
-                )
-            """, tuple(params))
-
-            cursor.execute(f"""
-                DELETE FROM test_cases
-                WHERE module_id IN (
-                    SELECT id FROM test_modules
-                    WHERE {where_clause}
-                )
-            """, tuple(params))
-
-            if module_name:
-                cursor.execute("DELETE FROM test_modules WHERE module_name = %s", (module_name,))
-
+        该方法保留接口兼容性，但不再执行任何 DELETE 操作，
+        确保 163 MySQL 测试框架数据只写入，不自动清理。
+        """
+        import logging
+        logging.info(
+            "163 MySQL test data cleanup is disabled: only write, no delete. "
+            f"module_name={module_name}, execution_id={execution_id}"
+        )
         return True
