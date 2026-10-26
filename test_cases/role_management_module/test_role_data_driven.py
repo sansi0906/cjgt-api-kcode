@@ -16,18 +16,6 @@ from utils.data_driver import load_param_cases
 
 from .test_base import TestBase
 
-API_PATHS = {
-    "save": "/common/role/save",
-    "page": "/common/role/page",
-    "detail": "/common/role/detail",
-    "edit": "/common/role/edit",
-    "change_status": "/common/role/changeStatus",
-    "delete": "/common/role/delete",
-    "select_role_all": "/common/role/selectRoleAll",
-    "select_menu_list": "/common/role/selectMenuListByRoleId",
-    "add_role_menu": "/common/role/addRoleMenu",
-}
-
 CASES, IDS = load_param_cases("data/role_data.json")
 
 
@@ -35,42 +23,13 @@ class TestRoleDataDriven(TestBase):
     @pytest.mark.parametrize("case", CASES, ids=IDS)
     def test_role_api(self, case):
         """按数据文件中的参数执行角色管理接口测试"""
-        role_id = None
-        role_name = None
-        role_no = None
-
-        if case.get("need_role"):
-            role_id, role_name, role_no = self._create_role()
-
-        payload = {
-            key: self._resolve(value, role_id=role_id, role_name=role_name, role_no=role_no)
-            for key, value in (case.get("payload") or {}).items()
+        ctx = self._ctx() if case.get("need_role") else {
+            "unique_role_name": self._unique_role_name(),
+            "unique_role_no": self._unique_role_no(),
         }
+        self.run_case(case, ctx)
 
-        response = self.client.post(API_PATHS[case["api"]], json=payload)
-        self.validator.assert_status_code(response, 200)
-        data = response.json()
-
-        if case.get("expect_success"):
-            self.assert_api_success(data)
-            self._assert_side_effect(case, payload, data, role_id, role_no)
-        else:
-            self.assert_api_failure(data, expected_code=case.get("expect_code"))
-
-    def _resolve(self, value, role_id=None, role_name=None, role_no=None):
-        if value == "${unique_role_name}":
-            return self._unique_role_name()
-        if value == "${unique_role_no}":
-            return self._unique_role_no()
-        if value == "${role_id}":
-            return role_id
-        if value == "${role_name}":
-            return role_name
-        if value == "${role_no}":
-            return role_no
-        return value
-
-    def _assert_side_effect(self, case, payload, data, role_id, role_no):
+    def assert_side_effect(self, case, payload, data, ctx):
         """校验接口成功后的落库情况"""
         api = case["api"]
         if api == "save":
