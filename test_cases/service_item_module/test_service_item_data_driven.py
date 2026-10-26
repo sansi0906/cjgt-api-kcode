@@ -15,14 +15,6 @@ from utils.data_driver import load_param_cases
 
 from .test_base import TestBase
 
-API_PATHS = {
-    "add": "/platform/serviceItem/add",
-    "paging": "/platform/serviceItem/paging",
-    "list_display": "/platform/serviceItem/listDisplay",
-    "edit": "/platform/serviceItem/edit",
-    "update_status": "/platform/serviceItem/updateStatus",
-}
-
 CASES, IDS = load_param_cases("data/service_item_data.json")
 
 
@@ -30,43 +22,13 @@ class TestServiceItemDataDriven(TestBase):
     @pytest.mark.parametrize("case", CASES, ids=IDS)
     def test_service_item_api(self, case):
         """按数据文件中的参数执行服务项目配置接口测试"""
-        item_id = None
-        item_name = None
-
-        if case.get("need_item"):
-            item_id, item_name = self._create_item()
-
-        payload = {
-            key: self._resolve(value, item_id=item_id, item_name=item_name)
-            for key, value in (case.get("payload") or {}).items()
+        ctx = self._ctx() if case.get("need_item") else {
+            "unique_item_name": self._unique_item_name(),
+            "unique_item_code": self._unique_item_code(),
         }
+        self.run_case(case, ctx)
 
-        response = self.client.post(API_PATHS[case["api"]], json=payload)
-        self.validator.assert_status_code(response, 200)
-        data = response.json()
-
-        if case.get("expect_success"):
-            self.assert_api_success(data)
-            self._assert_side_effect(case, payload, data, item_id)
-        else:
-            self.assert_api_failure(data, expected_code=case.get("expect_code"))
-
-    def _resolve(self, value, item_id=None, item_name=None):
-        """解析占位符，支持整串占位与内嵌占位"""
-        if not isinstance(value, str) or "${" not in value:
-            return value
-        mapping = {
-            "${unique_item_name}": self._unique_item_name(),
-            "${unique_item_code}": self._unique_item_code(),
-            "${item_id}": item_id,
-            "${item_name}": item_name,
-        }
-        for key, val in mapping.items():
-            if key in value:
-                value = value.replace(key, "" if val is None else str(val))
-        return value
-
-    def _assert_side_effect(self, case, payload, data, item_id):
+    def assert_side_effect(self, case, payload, data, ctx):
         """校验接口成功后的落库情况"""
         api = case["api"]
         if api == "add":

@@ -5,13 +5,21 @@ test_base.py - 服务项目配置测试基类
 """
 
 import pytest
-from utils.base_test import BaseTest
+from utils.module_base import DataDrivenApiTestBase
 from utils.factories import ServiceItemFactory, UniqueValueFactory
 
 
-class TestBase(BaseTest):
+class TestBase(DataDrivenApiTestBase):
     _module_name = "service_item_module"
     _module_desc = "服务项目配置管理模块"
+
+    api_paths = {
+        "add": "/platform/serviceItem/add",
+        "paging": "/platform/serviceItem/paging",
+        "list_display": "/platform/serviceItem/listDisplay",
+        "edit": "/platform/serviceItem/edit",
+        "update_status": "/platform/serviceItem/updateStatus",
+    }
 
     @staticmethod
     def _unique_item_name():
@@ -43,3 +51,14 @@ class TestBase(BaseTest):
 
     def _item_row(self, item_id):
         return self.fetch_business_row("cjgt_service_item", "id = %s", (item_id,))
+
+    def _ctx(self, item_id=None, item_name=None):
+        """造数上下文：need_item 时创建项目，返回 factories 生成的值"""
+        if item_id is None:
+            item_id, item_name = self._create_item()
+        return {
+            "item_id": item_id,
+            "item_name": item_name,
+            "unique_item_name": self._unique_item_name(),
+            "unique_item_code": self._unique_item_code(),
+        }

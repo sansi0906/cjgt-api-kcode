@@ -288,6 +288,24 @@ class ServiceProviderFactory:
         payload = ServiceProviderFactory.build(provider_id=provider_id, **overrides)
         return payload
 
+    @staticmethod
+    def build_edit_params(provider_id, **overrides):
+        """构建编辑服务商请求参数（蛇形命名，可直接传给 edit_server_user(**params)）"""
+        payload = ServiceProviderFactory.build_edit_payload(provider_id, **overrides)
+        payload.pop("id", None)
+        return {
+            "provider_id": provider_id,
+            "company_name": payload.pop("companyName"),
+            "unified_social_code": payload.pop("unifiedSocialCode"),
+            "office_address": payload.pop("officeAddress"),
+            "office_address_detail": payload.pop("officeAddressDetail", "自动化办公地址"),
+            "service_area": payload.pop("serviceArea"),
+            "contact_person": payload.pop("contactPerson"),
+            "contact_phone": payload.pop("contactPhone"),
+            "service_items": payload.pop("serviceItems"),
+            "status": payload.pop("status"),
+        }
+
 
 class PricingFactory:
     """定价测试数据工厂"""

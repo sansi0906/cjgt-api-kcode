@@ -5,13 +5,22 @@ test_base.py - 平台用户管理测试基类
 """
 
 import pytest
-from utils.base_test import BaseTest
+from utils.module_base import DataDrivenApiTestBase
 from utils.factories import UserFactory, UniqueValueFactory
 
 
-class TestBase(BaseTest):
+class TestBase(DataDrivenApiTestBase):
     _module_name = "platform_user_module"
     _module_desc = "平台用户管理模块"
+
+    api_paths = {
+        "save": "/platform/user/save",
+        "page": "/platform/user/page",
+        "detail": "/platform/user/detail",
+        "edit": "/platform/user/edit",
+        "change_status": "/platform/user/changeStatus",
+        "delete": "/platform/user/delete",
+    }
 
     @staticmethod
     def _unique_phone(prefix="176"):
@@ -35,6 +44,16 @@ class TestBase(BaseTest):
         assert row, f"创建用户未落库: {phone}"
         self.register_business_row("cjgt_platform_user", row["id"])
         return row["id"], phone
+
+    def _ctx(self, user_id=None, user_phone=None):
+        """造数上下文：need_user 时创建用户，返回 factories 生成的值"""
+        if user_id is None:
+            user_id, user_phone = self._create_user()
+        return {
+            "user_id": user_id,
+            "user_phone": user_phone,
+            "unique_phone": self._unique_phone(),
+        }
 
     def _user_status(self, user_id):
         """查询平台用户状态"""
