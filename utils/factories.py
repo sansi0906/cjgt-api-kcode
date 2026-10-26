@@ -342,6 +342,16 @@ class PricingFactory:
             "effectiveTime": effective_time,
         }
 
+    @staticmethod
+    def build_edit_params(service_item_id=None, pending_amount=None, area_list=None, effective_time=None):
+        """构建更新定价请求参数（蛇形命名，可直接传给 update_pricing(**params)）"""
+        return {
+            "service_item_id": service_item_id or 289,
+            "pending_amount": pending_amount if pending_amount is not None else 888.0,
+            "area_list": area_list or [{"code": "110101000000", "level": "county", "name": "东城区"}],
+            "effective_time": effective_time,
+        }
+
 
 class UniqueValueFactory:
     """唯一值生成工厂：统一各模块的 _unique_* 造数方法"""
