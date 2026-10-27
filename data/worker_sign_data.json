@@ -4,7 +4,7 @@
     "desc": "按手机号查询工人信息",
     "api": "worker_info",
     "payload": {
-      "phone": "15810299672"
+      "phone": "${WORKER_PHONE}"
     },
     "expect_success": true
   },
@@ -47,7 +47,7 @@
     "api": "save",
     "payload": {
       "userUuid": "100000134",
-      "workerPhone": "15810299672",
+      "workerPhone": "${WORKER_PHONE}",
       "provinceAreaCode": "120000",
       "cityAreaCode": "120100",
       "serviceItems": [],
@@ -63,7 +63,7 @@
     "api": "save",
     "payload": {
       "userUuid": "100000134",
-      "workerPhone": "15810299672",
+      "workerPhone": "${WORKER_PHONE}",
       "provinceAreaCode": "120000",
       "cityAreaCode": "120100",
       "serviceItems": [

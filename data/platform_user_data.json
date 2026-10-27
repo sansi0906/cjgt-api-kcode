@@ -113,7 +113,7 @@
     "name": "edit_missing_id",
     "desc": "编辑用户缺少用户ID",
     "api": "edit",
-    "payload": {"userName": "17600000000", "realName": "x", "sex": 1, "roleGroupId": 5, "status": 1},
+    "payload": {"userName": "${EDIT_USER_PHONE}", "realName": "x", "sex": 1, "roleGroupId": 5, "status": 1},
     "expect_success": false,
     "expect_code": "01000006"
   },

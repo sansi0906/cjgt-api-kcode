@@ -38,8 +38,8 @@
     "api": "platform_identify",
     "method": "GET",
     "payload": {
-      "idNum": "110101199001015661",
-      "name": "张三"
+      "idNum": "${OCR_ID_NUM}",
+      "name": "${OCR_NAME}"
     },
     "expect_success": false,
     "expect_code": "02"
@@ -83,8 +83,8 @@
     "api": "api_identify",
     "method": "GET",
     "payload": {
-      "idNum": "110101199001015661",
-      "name": "张三"
+      "idNum": "${OCR_ID_NUM}",
+      "name": "${OCR_NAME}"
     },
     "expect_success": false,
     "expect_code": "02"

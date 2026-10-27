@@ -6,19 +6,24 @@ test_base.py - 登录模块测试基类
 
 import time
 import uuid
+import datetime
 
 
 def _now():
-    import datetime
     return datetime.datetime.now()
 
 import pytest
-from utils.base_test import BaseTest
+from utils.module_base import DataDrivenApiTestBase
 
 
-class TestBase(BaseTest):
+class TestBase(DataDrivenApiTestBase):
     _module_name = "login_module"
     _module_desc = "登录模块"
+
+    api_paths = {
+        "login": "/sys/login",
+        "logout": "/sys/logout",
+    }
 
     def _create_temp_platform_user(self, username, status=1, delete_status=0):
         """基于管理员账号复制密码盐，造一个临时平台用户，返回账号 id

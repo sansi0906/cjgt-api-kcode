@@ -7,7 +7,7 @@ module_base.py - 通用数据驱动模块基类
 
 import pytest
 from utils.base_test import BaseTest
-from utils.data_driver import load_param_cases
+from utils.data_driver import load_param_cases, resolve_env_value
 
 
 # 1x1 像素 PNG（十六进制常量，已验证后端可正常解析上传）
@@ -94,16 +94,25 @@ class DataDrivenApiTestBase(BaseTest):
         """子类可覆写：校验接口成功后的落库情况"""
 
     def _resolve(self, value, ctx):
-        """解析占位符，支持整串占位与内嵌占位"""
+        """解析占位符，支持整串占位与内嵌占位
+
+        占位符约定：
+        - ${key}       来自 ctx 的占位（如 ${contact_no}），优先级最高
+        - ${ENV_NAME}  环境变量整串占位（如 ${TEST_USERNAME}），ctx 中缺失时回退
+        """
         if not isinstance(value, str) or "${" not in value:
             return value
-        for key, val in (ctx or {}).items():
+        ctx = ctx or {}
+        # 先处理 ctx 占位符（整串保留类型；内嵌替换为字符串）
+        for key, val in ctx.items():
             token = "${" + key + "}"
             if value == token:
-                # 整串占位：保留原始类型（列表/数字等）
                 return val
             if token in value:
                 value = value.replace(token, "" if val is None else str(val))
+        # 再处理环境变量整串占位：${ENV_NAME}
+        if value.startswith("${") and value.endswith("}"):
+            return resolve_env_value(value)
         return value
 
     # ==================== 业务数据操作封装 ====================
